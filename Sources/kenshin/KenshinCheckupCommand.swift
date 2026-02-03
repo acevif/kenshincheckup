@@ -17,10 +17,8 @@ public struct KenshinCheckupCommand: ParsableCommand {
 
     public init() {}
 
-    public static let versionString = "dev"
-
     public static func versionOutput() -> String {
-        "kenshin \(versionString)"
+        "kenshin \(Version.string)"
     }
 
     public static func usageLines() -> [String] {
