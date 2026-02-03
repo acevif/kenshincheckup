@@ -14,7 +14,7 @@ public struct MainCommand: ParsableCommand {
     @Option(name: [.short, .long], help: "Path to config file. (default: ~/.config/kenshin/config.toml)")
     public var config: String?
 
-    @Flag(name: [.customShort("v"), .long], help: "Print version and exit.")
+    @Flag(name: [.short, .long], help: "Print version and exit.")
     public var version: Bool = false
 
     public init() {}
