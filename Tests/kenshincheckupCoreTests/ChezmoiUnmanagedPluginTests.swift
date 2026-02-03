@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import kenshincheckupCore
+@testable import KenshinCheckupCore
 
 @Suite("Chezmoi Unmanaged Plugin")
 struct ChezmoiUnmanagedPluginTests {

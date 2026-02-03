@@ -1,5 +1,5 @@
 import Foundation
-import kenshincheckupCore
+import KenshinCheckupCore
 
 @main
 struct KenshinMain {

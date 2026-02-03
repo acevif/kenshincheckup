@@ -1,6 +1,6 @@
 import ArgumentParser
 import Foundation
-import kenshincheckupCore
+import KenshinCheckupCore
 
 public struct KenshinCheckupCommand: ParsableCommand {
     public static let configuration = CommandConfiguration(
