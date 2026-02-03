@@ -17,10 +17,6 @@ public struct KenshinCheckupCommand: ParsableCommand {
 
     public init() {}
 
-    public static func versionOutput() -> String {
-        "kenshin \(Version.string)"
-    }
-
     public static func usageLines() -> [String] {
         [
             "kenshin - config health checks (current: chezmoi-unmanaged)",
@@ -46,7 +42,7 @@ public struct KenshinCheckupCommand: ParsableCommand {
 
     public func run() throws {
         if version {
-            print(Self.versionOutput())
+            print(VersionSubcommand.versionOutput())
             return
         }
 

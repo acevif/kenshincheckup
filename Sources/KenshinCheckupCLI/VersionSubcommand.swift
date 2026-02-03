@@ -1,4 +1,5 @@
 import ArgumentParser
+import KenshinCheckupCore
 
 public struct VersionSubcommand: ParsableCommand {
     public static let configuration = CommandConfiguration(
@@ -8,7 +9,11 @@ public struct VersionSubcommand: ParsableCommand {
 
     public init() {}
 
+    public static func versionOutput() -> String {
+        "kenshin \(Version.string)"
+    }
+
     public func run() throws {
-        print(KenshinCheckupCommand.versionOutput())
+        print(Self.versionOutput())
     }
 }

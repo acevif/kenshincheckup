@@ -8,21 +8,21 @@ struct KenshinIntegrationTests {
     func versionLongOption() throws {
         let result = try runKenshin(["--version"])
         #expect(result.exitCode == 0)
-        #expect(result.stdout.trimmed() == KenshinCheckupCommand.versionOutput())
+        #expect(result.stdout.trimmed() == VersionSubcommand.versionOutput())
     }
 
     @Test("version: -v")
     func versionShortOption() throws {
         let result = try runKenshin(["-v"])
         #expect(result.exitCode == 0)
-        #expect(result.stdout.trimmed() == KenshinCheckupCommand.versionOutput())
+        #expect(result.stdout.trimmed() == VersionSubcommand.versionOutput())
     }
 
     @Test("version: subcommand")
     func versionSubcommand() throws {
         let result = try runKenshin(["version"])
         #expect(result.exitCode == 0)
-        #expect(result.stdout.trimmed() == KenshinCheckupCommand.versionOutput())
+        #expect(result.stdout.trimmed() == VersionSubcommand.versionOutput())
     }
 
     @Test("help: --help")
