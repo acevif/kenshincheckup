@@ -10,7 +10,7 @@ public struct VersionSubcommand: ParsableCommand {
     public init() {}
 
     public static func versionOutput() -> String {
-        "kenshin \(Version.string)"
+        "KenshinCheckup \(Version.string)"
     }
 
     public func run() throws {
