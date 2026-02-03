@@ -1,5 +1,7 @@
 # AGENTS.md
 
+NOTE: This project is under development; see `DESIGN.md` for the current specification. Remove this note before release.
+
 ## Project Rules
 
 - Follow `DESIGN.md` and `README.md`.
