@@ -1,4 +1,4 @@
-# kenshincheckup Spec (v1.1)
+# KenshinCheckup Spec
 
 Goal: Check the PC state and notify only (no fixes).
 Current scope: only the `chezmoi-unmanaged` plugin (first milestone).
