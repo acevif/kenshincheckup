@@ -67,6 +67,15 @@ Notes:
 Implementation direction (draft):
 - App/command name: kenshin.
 - Language: Swift (SPM project; no Xcode dependency).
+- Versioning:
+  - Use `PackageBuildInfo` to embed git build metadata into the binary.
+  - Git tags are the source of truth for the version string.
+- Configuration:
+  - Use `apple/swift-configuration` to load settings.
+  - Use `mattt/swift-configuration-toml` to resolve TOML.
+- Logging:
+  - Use `apple/swift-log`.
+  - If a backend is needed, use `sushichop/Puppy` (should run on macOS and Linux).
 - Notifications:
   - macOS: use native Swift code for desktop notifications/dialogs.
   - Linux: invoke `notify-send` via shell.

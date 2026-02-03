@@ -11,3 +11,4 @@
 - Prefer small, focused unit tests over complex integration tests.
 - Run `swift test` after every code change.
 - Tests must use Swift Testing (`Testing` module); do not use `XCTestCase`.
+- Do not put developer-facing details in `README.md`; keep them in `AGENTS.md`.
