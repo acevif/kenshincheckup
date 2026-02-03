@@ -6,7 +6,7 @@ public struct KenshinCheckupCommand: ParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "kenshin",
         abstract: "config health checks (current: chezmoi-unmanaged)",
-        subcommands: [CheckupCommand.self, VersionCommand.self, HelpCommand.self]
+        subcommands: [CheckupSubcommand.self, VersionSubcommand.self, HelpSubcommand.self]
     )
 
     @Option(name: [.short, .long], help: "Path to config file.")
@@ -52,13 +52,13 @@ public struct KenshinCheckupCommand: ParsableCommand {
             return
         }
 
-        var command = CheckupCommand()
+        var command = CheckupSubcommand()
         command.config = config
         try command.run()
     }
 }
 
-public struct CheckupCommand: ParsableCommand {
+public struct CheckupSubcommand: ParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "checkup",
         abstract: "Run checkups using the config file."
@@ -125,7 +125,7 @@ public struct CheckupCommand: ParsableCommand {
     }
 }
 
-public struct VersionCommand: ParsableCommand {
+public struct VersionSubcommand: ParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "version",
         abstract: "Print version information."
@@ -138,7 +138,7 @@ public struct VersionCommand: ParsableCommand {
     }
 }
 
-public struct HelpCommand: ParsableCommand {
+public struct HelpSubcommand: ParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "help",
         abstract: "Show help."
