@@ -1,22 +1,5 @@
 import Foundation
 
-public struct CommandResult: Equatable {
-    public let exitCode: Int32?
-    public let stdout: String
-    public let stderr: String
-
-    public init(exitCode: Int32?, stdout: String, stderr: String) {
-        self.exitCode = exitCode
-        self.stdout = stdout
-        self.stderr = stderr
-    }
-}
-
-public protocol CommandRunning {
-    func which(_ name: String) -> Bool
-    func run(_ command: [String], cwd: URL?) -> CommandResult
-}
-
 public struct SystemCommandRunner: CommandRunning {
     private let fileManager: FileManager
 
