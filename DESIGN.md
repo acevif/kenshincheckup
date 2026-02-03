@@ -71,8 +71,7 @@ Implementation direction (draft):
   - Use `PackageBuildInfo` to embed git build metadata into the binary.
   - Git tags are the source of truth for the version string.
 - Configuration:
-  - Use `apple/swift-configuration` to load settings.
-  - Use `mattt/swift-configuration-toml` to resolve TOML.
+  - Use `dduan/TOMLDecoder` to parse TOML.
 - Logging:
   - Use `apple/swift-log`.
   - If a backend is needed, use `sushichop/Puppy` (should run on macOS and Linux).
