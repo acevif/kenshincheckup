@@ -85,3 +85,4 @@ Future:
 - Candidate plugin: `doctor_git_remind` to detect push/commit omissions using `git-remind` (out of v1.0 scope).
 - Candidate plugin: `doctor_brew_outdated` to report `brew outdated` results (out of v1.0 scope).
 - Candidate plugin: `doctor_mise_doctor` to report `mise doctor` results (out of v1.0 scope).
+- Add a configuration abstraction layer to allow future support for `swift-configuration`.
