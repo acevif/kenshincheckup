@@ -6,7 +6,7 @@ public struct KenshinCheckupCommand: ParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "kenshin",
         abstract: "KenshinCheckup (kenshin) performs multiple doctor checks in one go.",
-        discussion: "https://github.com/acevif/kenshincheckup",
+        discussion: "Find more information at: https://github.com/acevif/kenshincheckup/",
         subcommands: [CheckupSubcommand.self, VersionSubcommand.self]
     )
 
