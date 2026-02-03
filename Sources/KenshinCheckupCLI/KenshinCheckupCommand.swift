@@ -6,11 +6,11 @@ public struct KenshinCheckupCommand: ParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "kenshin",
         abstract: "KenshinCheckup (kenshin) performs multiple doctor checks in one go.",
-        discussion: "Repository: https://github.com/acevif/kenshincheckup",
+        discussion: "https://github.com/acevif/kenshincheckup",
         subcommands: [CheckupSubcommand.self, VersionSubcommand.self]
     )
 
-    @Option(name: [.short, .long], help: "Path to config file.")
+    @Option(name: [.short, .long], help: "Path to config file. (default: ~/.config/kenshin/config.toml)")
     public var config: String?
 
     @Flag(name: [.customShort("v"), .long], help: "Print version and exit.")
