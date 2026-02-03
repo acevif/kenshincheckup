@@ -48,13 +48,27 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
             let matches = findMatchingFiles(in: repo, patterns: patterns)
             for fileURL in matches {
                 let managed = commandRunner.run(["chezmoi", "source-path", fileURL.path], cwd: nil)
-                if managed.exitCode != 0 {
+                switch managed.exitCode {
+                case 0:
+                    continue
+                case 1:
                     let entry = CheckEntry(
                         status: .warn,
                         message: "unmanaged file",
                         details: ["repo: \(repo.path)", "file: \(fileURL.path)"]
                     )
                     entries.append(entry)
+                default:
+                    let entry = CheckEntry(
+                        status: .fail,
+                        message: "chezmoi command failed",
+                        details: [
+                            "repo: \(repo.path)",
+                            "file: \(fileURL.path)",
+                            "error: \(managed.stderr)",
+                        ]
+                    )
+                    return CheckResult(name: name, description: description, entries: [entry])
                 }
             }
         }
