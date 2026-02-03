@@ -2,6 +2,9 @@ import ArgumentParser
 import Foundation
 import KenshinCheckupCore
 import Logging
+
+fileprivate let checkupLogger = Logger(label: "kenshin.checkup")
+
 public struct CheckupSubcommand: ParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "checkup",
@@ -33,13 +36,7 @@ public struct CheckupSubcommand: ParsableCommand {
             OutputFormatter.write(result)
             throw ExitCode(OutputFormatter.exitCode(for: [result]))
         } catch {
-            LoggingSystem.bootstrap { label in
-                var handler = StreamLogHandler.standardError(label: label)
-                handler.logLevel = .info
-                return handler
-            }
-            let logger = Logger(label: "kenshin.checkup")
-            logger.error(
+            checkupLogger.error(
                 "config load failed",
                 metadata: [
                     "path": "\(configURL.path)",

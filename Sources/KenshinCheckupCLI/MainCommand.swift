@@ -1,6 +1,7 @@
 import ArgumentParser
 import Foundation
 import KenshinCheckupCore
+import Logging
 
 @main
 public struct MainCommand: ParsableCommand {
@@ -20,6 +21,12 @@ public struct MainCommand: ParsableCommand {
     public init() {}
 
     public func run() throws {
+        LoggingSystem.bootstrap { label in
+            var handler = StreamLogHandler.standardError(label: label)
+            handler.logLevel = .info
+            return handler
+        }
+
         if version {
             print(VersionSubcommand.versionOutput())
             return
