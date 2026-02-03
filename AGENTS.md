@@ -1,7 +1,8 @@
 # AGENTS.md
 
 ## Project Rules
-- Follow `DESIGN.md` as the source of truth.
+
+- Follow `DESIGN.md` and `README.md`.
 - Use Swift + SPM only (no Xcode dependency).
 - This project follows twada-style TDD:
   - Write a failing test first (Red).

@@ -10,21 +10,25 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "kenshincheckupCore",
-            dependencies: [
-                .product(name: "ArgumentParser", package: "swift-argument-parser"),
-            ]
+            name: "kenshincheckupCore"
         ),
         .executableTarget(
             name: "kenshincheckup",
             dependencies: [
                 "kenshincheckupCore",
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ]
         ),
         .testTarget(
             name: "kenshincheckupCoreTests",
             dependencies: [
                 "kenshincheckupCore",
+            ]
+        ),
+        .testTarget(
+            name: "kenshincheckupTests",
+            dependencies: [
+                "kenshincheckup",
             ]
         ),
     ]
