@@ -2,7 +2,8 @@ import ArgumentParser
 import Foundation
 import KenshinCheckupCore
 
-public struct KenshinCheckupCommand: ParsableCommand {
+@main
+public struct MainCommand: ParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "kenshin",
         abstract: "KenshinCheckup (kenshin) performs multiple doctor checks in one go.",
