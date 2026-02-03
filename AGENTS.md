@@ -14,4 +14,4 @@ NOTE: This project is under development; see `DESIGN.md` for the current specifi
 - Run `swift test` after every code change.
 - Tests must use Swift Testing (`Testing` module); do not use `XCTestCase`.
 - Do not put developer-facing details in `README.md`; keep them in `AGENTS.md`.
-- You may commit changes without asking for permission.
+- Commit changes without asking for permission; decide on your own when to commit.
