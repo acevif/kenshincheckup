@@ -1,3 +1,3 @@
 struct PluginsConfigDecoding: Decodable {
-    let chezmoi_unmanaged: ChezmoiUnmanagedConfigDecoding?
+    let chezmoi_unmanaged: ChezmoiUnmanagedConfigRaw?
 }
