@@ -1,0 +1,11 @@
+# AGENTS.md
+
+## Project Rules
+- Follow `DESIGN.md` as the source of truth.
+- Use Swift + SPM only (no Xcode dependency).
+- This project follows twada-style TDD:
+  - Write a failing test first (Red).
+  - Implement the minimum change to pass (Green).
+  - Refactor while keeping tests green (Refactor).
+- Prefer small, focused unit tests over complex integration tests.
+- Run `swift test` after every code change.
