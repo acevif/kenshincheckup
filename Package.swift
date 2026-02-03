@@ -5,6 +5,9 @@ import PackageDescription
 
 let package = Package(
     name: "KenshinCheckup",
+    platforms: [
+        .macOS(.v10_15),
+    ],
     products: [
         .executable(
             name: "kenshin",
@@ -13,10 +16,14 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
+        .package(url: "https://github.com/dduan/TOMLDecoder", from: "0.4.3"),
     ],
     targets: [
         .target(
-            name: "KenshinCheckupCore"
+            name: "KenshinCheckupCore",
+            dependencies: [
+                .product(name: "TOMLDecoder", package: "TOMLDecoder"),
+            ]
         ),
         .executableTarget(
             name: "KenshinCheckupCLI",
