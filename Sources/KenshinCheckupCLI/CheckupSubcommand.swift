@@ -1,7 +1,7 @@
 import ArgumentParser
 import Foundation
 import KenshinCheckupCore
-
+import Logging
 public struct CheckupSubcommand: ParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "checkup",
@@ -33,6 +33,20 @@ public struct CheckupSubcommand: ParsableCommand {
             OutputFormatter.write(result)
             throw ExitCode(OutputFormatter.exitCode(for: [result]))
         } catch {
+            LoggingSystem.bootstrap { label in
+                var handler = StreamLogHandler.standardError(label: label)
+                handler.logLevel = .info
+                return handler
+            }
+            let logger = Logger(label: "kenshin.checkup")
+            logger.error(
+                "config load failed",
+                metadata: [
+                    "path": "\(configURL.path)",
+                    "error": "\(error)",
+                    "errorType": "\(type(of: error))",
+                ]
+            )
             let result = CheckResult(
                 name: "doctor_chezmoi_unmanaged",
                 description: "Detect unmanaged config files.",
