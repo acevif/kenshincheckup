@@ -5,7 +5,37 @@ import kenshincheckupCore
 public struct KenshinCheckupCommand: ParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "kenshincheckup",
-        abstract: "config health checks (current: chezmoi-unmanaged)"
+        abstract: "config health checks (current: chezmoi-unmanaged)",
+        subcommands: [CheckupCommand.self, VersionCommand.self, HelpCommand.self],
+        defaultSubcommand: CheckupCommand.self
+    )
+
+    public init() {}
+
+    public static func usageLines() -> [String] {
+        [
+            "kenshincheckup - config health checks (current: chezmoi-unmanaged)",
+            "",
+            "Usage:",
+            "  kenshincheckup",
+            "  kenshincheckup help",
+            "  kenshincheckup checkup",
+            "  kenshincheckup version",
+            "  kenshincheckup --help",
+            "  kenshincheckup -h",
+            "  kenshincheckup checkup --config <path>",
+            "  kenshincheckup checkup -c <path>",
+            "",
+            "Config:",
+            "  ~/.config/kenshin/config.toml",
+        ]
+    }
+}
+
+public struct CheckupCommand: ParsableCommand {
+    public static let configuration = CommandConfiguration(
+        commandName: "checkup",
+        abstract: "Run checkups using the config file."
     )
 
     @Option(name: [.short, .long], help: "Path to config file.")
@@ -66,5 +96,33 @@ public struct KenshinCheckupCommand: ParsableCommand {
             return URL(fileURLWithPath: homePath).appendingPathComponent(suffix).path
         }
         return path
+    }
+}
+
+public struct VersionCommand: ParsableCommand {
+    public static let configuration = CommandConfiguration(
+        commandName: "version",
+        abstract: "Print version information."
+    )
+
+    public init() {}
+
+    public func run() throws {
+        print("kenshincheckup dev")
+    }
+}
+
+public struct HelpCommand: ParsableCommand {
+    public static let configuration = CommandConfiguration(
+        commandName: "help",
+        abstract: "Show help."
+    )
+
+    public init() {}
+
+    public func run() throws {
+        for line in KenshinCheckupCommand.usageLines() {
+            print(line)
+        }
     }
 }
