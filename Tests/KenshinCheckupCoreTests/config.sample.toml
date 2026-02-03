@@ -1,0 +1,2 @@
+[plugins.chezmoi_unmanaged]
+patterns = [".claude/config.toml", ".codex/rules/*.rules"]

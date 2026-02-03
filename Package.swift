@@ -36,6 +36,9 @@ let package = Package(
             name: "KenshinCheckupCoreTests",
             dependencies: [
                 "KenshinCheckupCore",
+            ],
+            resources: [
+                .copy("config.sample.toml"),
             ]
         ),
         .testTarget(
