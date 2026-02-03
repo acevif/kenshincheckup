@@ -5,9 +5,15 @@ import PackageDescription
 
 let package = Package(
     name: "kenshincheckup",
+    dependencies: [
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
+    ],
     targets: [
         .target(
-            name: "kenshincheckupCore"
+            name: "kenshincheckupCore",
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ]
         ),
         .executableTarget(
             name: "kenshincheckup",
