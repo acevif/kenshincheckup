@@ -5,6 +5,12 @@ import PackageDescription
 
 let package = Package(
     name: "KenshinCheckup",
+    products: [
+        .executable(
+            name: "kenshin",
+            targets: ["KenshinCheckupCLI"]
+        ),
+    ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
     ],
@@ -13,7 +19,7 @@ let package = Package(
             name: "KenshinCheckupCore"
         ),
         .executableTarget(
-            name: "kenshin",
+            name: "KenshinCheckupCLI",
             dependencies: [
                 "KenshinCheckupCore",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
@@ -26,9 +32,9 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "kenshinTests",
+            name: "KenshinCheckupCLITests",
             dependencies: [
-                "kenshin",
+                "KenshinCheckupCLI",
             ]
         ),
     ]
