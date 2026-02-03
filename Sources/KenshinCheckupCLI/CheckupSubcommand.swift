@@ -3,7 +3,7 @@ import Foundation
 import KenshinCheckupCore
 import Logging
 
-fileprivate let checkupLogger = Logger(label: "kenshin.checkup")
+fileprivate let logger = Logger(label: "kenshin.checkup")
 
 public struct CheckupSubcommand: ParsableCommand {
     public static let configuration = CommandConfiguration(
@@ -36,7 +36,7 @@ public struct CheckupSubcommand: ParsableCommand {
             OutputFormatter.write(result)
             throw ExitCode(OutputFormatter.exitCode(for: [result]))
         } catch {
-            checkupLogger.error(
+            logger.error(
                 "config load failed",
                 metadata: [
                     "path": "\(configURL.path)",
