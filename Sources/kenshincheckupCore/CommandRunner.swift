@@ -1,11 +1,11 @@
 import Foundation
 
 public struct CommandResult: Equatable {
-    public let exitCode: Int32
+    public let exitCode: Int32?
     public let stdout: String
     public let stderr: String
 
-    public init(exitCode: Int32, stdout: String, stderr: String) {
+    public init(exitCode: Int32?, stdout: String, stderr: String) {
         self.exitCode = exitCode
         self.stdout = stdout
         self.stderr = stderr
@@ -52,7 +52,7 @@ public struct SystemCommandRunner: CommandRunning {
         do {
             try process.run()
         } catch {
-            return CommandResult(exitCode: 127, stdout: "", stderr: String(describing: error))
+            return CommandResult(exitCode: nil, stdout: "", stderr: String(describing: error))
         }
 
         process.waitUntilExit()

@@ -49,9 +49,9 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
             for fileURL in matches {
                 let managed = commandRunner.run(["chezmoi", "source-path", fileURL.path], cwd: nil)
                 switch managed.exitCode {
-                case 0:
+                case .some(0):
                     continue
-                case 1:
+                case .some(1):
                     let entry = CheckEntry(
                         status: .warn,
                         message: "unmanaged file",

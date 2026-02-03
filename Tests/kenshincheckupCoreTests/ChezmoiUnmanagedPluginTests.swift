@@ -80,7 +80,7 @@ struct ChezmoiUnmanagedPluginTests {
         runner.stub(
             ["chezmoi", "source-path", expectedFilePath],
             cwd: nil,
-            result: CommandResult(exitCode: 127, stdout: "", stderr: "boom")
+            result: CommandResult(exitCode: nil, stdout: "", stderr: "boom")
         )
 
         let plugin = ChezmoiUnmanagedPlugin(patterns: [".claude/config.toml"], commandRunner: runner, fileManager: .default)
