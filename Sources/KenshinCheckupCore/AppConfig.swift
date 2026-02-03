@@ -1,7 +1,7 @@
 public struct AppConfig: Equatable {
-    public let patterns: [String]
+    public let chezmoiUnmanaged: ChezmoiUnmanagedConfig
 
-    public init(patterns: [String]) {
-        self.patterns = patterns
+    public init(chezmoiUnmanaged: ChezmoiUnmanagedConfig) {
+        self.chezmoiUnmanaged = chezmoiUnmanaged
     }
 }

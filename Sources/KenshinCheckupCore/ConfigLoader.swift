@@ -12,9 +12,9 @@ public struct ConfigLoader {
     public static func parse(_ text: String) throws -> AppConfig {
         let data = Data(text.utf8)
         let decoder = TOMLDecoder()
-        let root: RootConfig
+        let root: RootConfigDecoding
         do {
-            root = try decoder.decode(RootConfig.self, from: data)
+            root = try decoder.decode(RootConfigDecoding.self, from: data)
         } catch {
             throw ConfigError.invalidFormat
         }
@@ -26,6 +26,6 @@ public struct ConfigLoader {
             throw ConfigError.missingPatterns
         }
 
-        return AppConfig(patterns: patterns)
+        return AppConfig(chezmoiUnmanaged: ChezmoiUnmanagedConfig(patterns: patterns))
     }
 }

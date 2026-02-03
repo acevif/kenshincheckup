@@ -11,7 +11,7 @@ struct ConfigLoaderTests {
         """
 
         let config = try ConfigLoader.parse(text)
-        #expect(config.patterns == [".claude/config.toml", ".codex/rules/*.rules"])
+        #expect(config.chezmoiUnmanaged.patterns == [".claude/config.toml", ".codex/rules/*.rules"])
     }
 
     @Test("missing section throws")

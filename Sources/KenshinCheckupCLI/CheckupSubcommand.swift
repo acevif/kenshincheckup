@@ -25,7 +25,7 @@ public struct CheckupSubcommand: ParsableCommand {
         do {
             let loaded = try ConfigLoader.load(from: configURL)
             let plugin = ChezmoiUnmanagedPlugin(
-                patterns: loaded.patterns,
+                patterns: loaded.chezmoiUnmanaged.patterns,
                 commandRunner: commandRunner,
                 fileManager: .default
             )
