@@ -10,3 +10,4 @@
   - Refactor while keeping tests green (Refactor).
 - Prefer small, focused unit tests over complex integration tests.
 - Run `swift test` after every code change.
+- Tests must use Swift Testing (`Testing` module); do not use `XCTestCase`.

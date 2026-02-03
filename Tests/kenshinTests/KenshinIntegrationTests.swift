@@ -1,41 +1,49 @@
-import XCTest
+import Foundation
+import Testing
 @testable import kenshin
 
-final class KenshinIntegrationTests: XCTestCase {
-    func testVersionLongOption() throws {
+@Suite("Kenshin Integration")
+struct KenshinIntegrationTests {
+    @Test("version: --version")
+    func versionLongOption() throws {
         let result = try runKenshin(["--version"])
-        XCTAssertEqual(result.exitCode, 0)
-        XCTAssertEqual(result.stdout.trimmed(), KenshinCheckupCommand.versionOutput())
+        #expect(result.exitCode == 0)
+        #expect(result.stdout.trimmed() == KenshinCheckupCommand.versionOutput())
     }
 
-    func testVersionShortOption() throws {
+    @Test("version: -v")
+    func versionShortOption() throws {
         let result = try runKenshin(["-v"])
-        XCTAssertEqual(result.exitCode, 0)
-        XCTAssertEqual(result.stdout.trimmed(), KenshinCheckupCommand.versionOutput())
+        #expect(result.exitCode == 0)
+        #expect(result.stdout.trimmed() == KenshinCheckupCommand.versionOutput())
     }
 
-    func testVersionSubcommand() throws {
+    @Test("version: subcommand")
+    func versionSubcommand() throws {
         let result = try runKenshin(["version"])
-        XCTAssertEqual(result.exitCode, 0)
-        XCTAssertEqual(result.stdout.trimmed(), KenshinCheckupCommand.versionOutput())
+        #expect(result.exitCode == 0)
+        #expect(result.stdout.trimmed() == KenshinCheckupCommand.versionOutput())
     }
 
-    func testHelpLongOption() throws {
+    @Test("help: --help")
+    func helpLongOption() throws {
         let result = try runKenshin(["--help"])
-        XCTAssertEqual(result.exitCode, 0)
-        XCTAssertTrue(result.stdout.lowercased().contains("usage"))
+        #expect(result.exitCode == 0)
+        #expect(result.stdout.lowercased().contains("usage"))
     }
 
-    func testHelpShortOption() throws {
+    @Test("help: -h")
+    func helpShortOption() throws {
         let result = try runKenshin(["-h"])
-        XCTAssertEqual(result.exitCode, 0)
-        XCTAssertTrue(result.stdout.lowercased().contains("usage"))
+        #expect(result.exitCode == 0)
+        #expect(result.stdout.lowercased().contains("usage"))
     }
 
-    func testHelpSubcommand() throws {
+    @Test("help: subcommand")
+    func helpSubcommand() throws {
         let result = try runKenshin(["help"])
-        XCTAssertEqual(result.exitCode, 0)
-        XCTAssertTrue(result.stdout.lowercased().contains("usage"))
+        #expect(result.exitCode == 0)
+        #expect(result.stdout.lowercased().contains("usage"))
     }
 
     private func runKenshin(_ args: [String]) throws -> (stdout: String, stderr: String, exitCode: Int32) {
@@ -61,13 +69,15 @@ final class KenshinIntegrationTests: XCTestCase {
 
     private func productsDirectory() throws -> URL {
         #if os(macOS)
-        let bundle = Bundle(for: type(of: self))
+        let bundle = Bundle(for: Helper.self)
         return bundle.bundleURL.deletingLastPathComponent()
         #else
         return Bundle.main.bundleURL
         #endif
     }
 }
+
+private final class Helper {}
 
 private extension String {
     func trimmed() -> String {

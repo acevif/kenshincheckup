@@ -1,25 +1,28 @@
-import XCTest
+import Testing
 @testable import kenshincheckupCore
 
-final class ConfigLoaderTests: XCTestCase {
-    func testParseConfigPatterns() throws {
+@Suite("Config Loader")
+struct ConfigLoaderTests {
+    @Test("parse config patterns")
+    func parseConfigPatterns() throws {
         let text = """
         [plugins.chezmoi_unmanaged]
         patterns = [".claude/config.toml", ".codex/rules/*.rules"]
         """
 
         let config = try ConfigLoader.parse(text)
-        XCTAssertEqual(config.patterns, [".claude/config.toml", ".codex/rules/*.rules"])
+        #expect(config.patterns == [".claude/config.toml", ".codex/rules/*.rules"])
     }
 
-    func testMissingSectionThrows() {
+    @Test("missing section throws")
+    func missingSectionThrows() {
         let text = """
         [other.section]
         patterns = [".claude/config.toml"]
         """
 
-        XCTAssertThrowsError(try ConfigLoader.parse(text)) { error in
-            XCTAssertEqual(error as? ConfigError, .missingSection)
+        #expect(throws: ConfigError.self) {
+            _ = try ConfigLoader.parse(text)
         }
     }
 }

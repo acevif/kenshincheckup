@@ -1,7 +1,9 @@
-import XCTest
+import Foundation
+import Testing
 @testable import kenshincheckupCore
 
-final class ChezmoiUnmanagedPluginTests: XCTestCase {
+@Suite("Chezmoi Unmanaged Plugin")
+struct ChezmoiUnmanagedPluginTests {
     private func canonicalPath(_ path: String) -> String {
         if path.hasPrefix("/var/") {
             return "/private" + path
@@ -47,18 +49,20 @@ final class ChezmoiUnmanagedPluginTests: XCTestCase {
         }
     }
 
-    func testSkipWhenGhqMissing() {
+    @Test("skip when ghq missing")
+    func skipWhenGhqMissing() {
         let runner = TestCommandRunner()
         runner.available = ["chezmoi"]
         let plugin = ChezmoiUnmanagedPlugin(patterns: [".claude/config.toml"], commandRunner: runner, fileManager: .default)
 
         let result = plugin.run()
 
-        XCTAssertEqual(result.entries.count, 1)
-        XCTAssertEqual(result.entries.first?.status, .skip)
+        #expect(result.entries.count == 1)
+        #expect(result.entries.first?.status == .skip)
     }
 
-    func testWarnWhenUnmanaged() throws {
+    @Test("warn when unmanaged")
+    func warnWhenUnmanaged() throws {
         let runner = TestCommandRunner()
         runner.available = ["ghq", "chezmoi"]
 
@@ -80,15 +84,16 @@ final class ChezmoiUnmanagedPluginTests: XCTestCase {
         let plugin = ChezmoiUnmanagedPlugin(patterns: [".claude/config.toml"], commandRunner: runner, fileManager: .default)
         let result = plugin.run()
 
-        XCTAssertEqual(result.entries.first?.status, .warn)
-        XCTAssertEqual(result.entries.first?.message, "unmanaged file")
+        #expect(result.entries.first?.status == .warn)
+        #expect(result.entries.first?.message == "unmanaged file")
         let details = result.entries.first?.details ?? []
-        XCTAssertEqual(details.count, 2)
-        XCTAssertEqual(canonicalPath(extractPath(details[0], prefix: "repo: ")), expectedRepoPath)
-        XCTAssertEqual(canonicalPath(extractPath(details[1], prefix: "file: ")), expectedFilePath)
+        #expect(details.count == 2)
+        #expect(canonicalPath(extractPath(details[0], prefix: "repo: ")) == expectedRepoPath)
+        #expect(canonicalPath(extractPath(details[1], prefix: "file: ")) == expectedFilePath)
     }
 
-    func testOkWhenManaged() throws {
+    @Test("ok when managed")
+    func okWhenManaged() throws {
         let runner = TestCommandRunner()
         runner.available = ["ghq", "chezmoi"]
 
@@ -109,6 +114,6 @@ final class ChezmoiUnmanagedPluginTests: XCTestCase {
         let plugin = ChezmoiUnmanagedPlugin(patterns: [".claude/config.toml"], commandRunner: runner, fileManager: .default)
         let result = plugin.run()
 
-        XCTAssertEqual(result.entries.first?.status, .ok)
+        #expect(result.entries.first?.status == .ok)
     }
 }
