@@ -4,12 +4,22 @@ import kenshincheckupCore
 @main
 struct KenshinCheckupApp {
     static func main() {
+        let args = Array(CommandLine.arguments.dropFirst())
+        let parsed = CliOptions.parse(args)
+        if parsed.showHelp {
+            printUsage()
+            exit(0)
+        }
+        if parsed.hasError {
+            printUsage()
+            exit(1)
+        }
+
         let homePath = ProcessInfo.processInfo.environment["HOME"]
             ?? FileManager.default.homeDirectoryForCurrentUser.path
-        let configURL = URL(fileURLWithPath: homePath)
-            .appendingPathComponent(".config")
-            .appendingPathComponent("kenshin")
-            .appendingPathComponent("config.toml")
+        let configPath = parsed.configPath.map { CliOptions.resolvePath($0, homePath: homePath) }
+            ?? CliOptions.defaultConfigPath(homePath: homePath)
+        let configURL = URL(fileURLWithPath: configPath)
 
         let commandRunner = SystemCommandRunner()
 
@@ -39,4 +49,25 @@ struct KenshinCheckupApp {
             exit(1)
         }
     }
+
+    private static func printUsage() {
+        let lines = [
+            "kenshincheckup - config health checks (current: chezmoi-unmanaged)",
+            "",
+            "Usage:",
+            "  kenshincheckup",
+            "  kenshincheckup help",
+            "  kenshincheckup --help",
+            "  kenshincheckup -h",
+            "  kenshincheckup --config <path>",
+            "  kenshincheckup -c <path>",
+            "",
+            "Config:",
+            "  ~/.config/kenshin/config.toml",
+        ]
+        for line in lines {
+            print(line)
+        }
+    }
+
 }
