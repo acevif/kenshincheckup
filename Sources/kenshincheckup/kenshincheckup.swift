@@ -4,7 +4,9 @@ import kenshincheckupCore
 @main
 struct KenshinCheckupApp {
     static func main() {
-        let configURL = FileManager.default.homeDirectoryForCurrentUser
+        let homePath = ProcessInfo.processInfo.environment["HOME"]
+            ?? FileManager.default.homeDirectoryForCurrentUser.path
+        let configURL = URL(fileURLWithPath: homePath)
             .appendingPathComponent(".config")
             .appendingPathComponent("kenshin")
             .appendingPathComponent("config.toml")
