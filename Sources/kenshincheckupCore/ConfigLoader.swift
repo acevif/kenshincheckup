@@ -1,21 +1,6 @@
 import Foundation
 import TOMLDecoder
 
-public struct AppConfig: Equatable {
-    public let patterns: [String]
-
-    public init(patterns: [String]) {
-        self.patterns = patterns
-    }
-}
-
-public enum ConfigError: Error, Equatable {
-    case missingFile
-    case missingSection
-    case missingPatterns
-    case invalidFormat
-}
-
 public struct ConfigLoader {
     public static func load(from url: URL) throws -> AppConfig {
         guard let text = try? String(contentsOf: url, encoding: .utf8) else {
@@ -43,16 +28,4 @@ public struct ConfigLoader {
 
         return AppConfig(patterns: patterns)
     }
-}
-
-private struct RootConfig: Decodable {
-    struct Plugins: Decodable {
-        struct ChezmoiUnmanaged: Decodable {
-            let patterns: [String]?
-        }
-
-        let chezmoi_unmanaged: ChezmoiUnmanaged?
-    }
-
-    let plugins: Plugins?
 }

@@ -69,18 +69,10 @@ struct KenshinIntegrationTests {
 
     private func productsDirectory() throws -> URL {
         #if os(macOS)
-        let bundle = Bundle(for: Helper.self)
+        let bundle = Bundle(for: TestBundleHelper.self)
         return bundle.bundleURL.deletingLastPathComponent()
         #else
         return Bundle.main.bundleURL
         #endif
-    }
-}
-
-private final class Helper {}
-
-private extension String {
-    func trimmed() -> String {
-        trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }

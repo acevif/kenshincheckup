@@ -2,14 +2,9 @@ import Foundation
 @testable import KenshinCheckupCore
 
 final class FakeCommandRunner: CommandRunning {
-    struct Call: Equatable {
-        let command: [String]
-        let cwd: URL?
-    }
-
     var available: Set<String> = []
     private var stubs: [String: CommandResult] = [:]
-    private(set) var calls: [Call] = []
+    private(set) var calls: [FakeCommandRunnerCall] = []
 
     func which(_ name: String) -> Bool {
         available.contains(name)
@@ -20,7 +15,7 @@ final class FakeCommandRunner: CommandRunning {
     }
 
     func run(_ command: [String], cwd: URL?) -> CommandResult {
-        let call = Call(command: command, cwd: cwd)
+        let call = FakeCommandRunnerCall(command: command, cwd: cwd)
         calls.append(call)
         if let result = stubs[key(for: command, cwd: cwd)] {
             return result
