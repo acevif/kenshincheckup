@@ -1,6 +1,6 @@
 import XCTest
 import ArgumentParser
-@testable import kenshincheckup
+@testable import kenshin
 
 final class CheckupCommandTests: XCTestCase {
     func testDefaultConfigPath() {

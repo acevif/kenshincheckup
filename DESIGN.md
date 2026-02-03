@@ -65,7 +65,7 @@ Notes:
 - Unexpected errors in a check (e.g., command execution errors) should report `FAIL` and stop that function.
 
 Implementation direction (draft):
-- App name: kenshincheckup.
+- App/command name: kenshin.
 - Language: Swift (SPM project; no Xcode dependency).
 - Notifications:
   - macOS: use native Swift code for desktop notifications/dialogs.

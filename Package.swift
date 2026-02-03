@@ -13,7 +13,7 @@ let package = Package(
             name: "kenshincheckupCore"
         ),
         .executableTarget(
-            name: "kenshincheckup",
+            name: "kenshin",
             dependencies: [
                 "kenshincheckupCore",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
@@ -26,9 +26,9 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "kenshincheckupTests",
+            name: "kenshinTests",
             dependencies: [
-                "kenshincheckup",
+                "kenshin",
             ]
         ),
     ]

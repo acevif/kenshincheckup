@@ -4,31 +4,57 @@ import kenshincheckupCore
 
 public struct KenshinCheckupCommand: ParsableCommand {
     public static let configuration = CommandConfiguration(
-        commandName: "kenshincheckup",
+        commandName: "kenshin",
         abstract: "config health checks (current: chezmoi-unmanaged)",
-        subcommands: [CheckupCommand.self, VersionCommand.self, HelpCommand.self],
-        defaultSubcommand: CheckupCommand.self
+        subcommands: [CheckupCommand.self, VersionCommand.self, HelpCommand.self]
     )
+
+    @Option(name: [.short, .long], help: "Path to config file.")
+    public var config: String?
+
+    @Flag(name: [.customShort("v"), .long], help: "Print version and exit.")
+    public var version: Bool = false
 
     public init() {}
 
+    public static let versionString = "dev"
+
+    public static func versionOutput() -> String {
+        "kenshin \(versionString)"
+    }
+
     public static func usageLines() -> [String] {
         [
-            "kenshincheckup - config health checks (current: chezmoi-unmanaged)",
+            "kenshin - config health checks (current: chezmoi-unmanaged)",
             "",
             "Usage:",
-            "  kenshincheckup",
-            "  kenshincheckup help",
-            "  kenshincheckup checkup",
-            "  kenshincheckup version",
-            "  kenshincheckup --help",
-            "  kenshincheckup -h",
-            "  kenshincheckup checkup --config <path>",
-            "  kenshincheckup checkup -c <path>",
+            "  kenshin",
+            "  kenshin help",
+            "  kenshin checkup",
+            "  kenshin version",
+            "  kenshin --help",
+            "  kenshin -h",
+            "  kenshin --version",
+            "  kenshin -v",
+            "  kenshin --config <path>",
+            "  kenshin -c <path>",
+            "  kenshin checkup --config <path>",
+            "  kenshin checkup -c <path>",
             "",
             "Config:",
             "  ~/.config/kenshin/config.toml",
         ]
+    }
+
+    public func run() throws {
+        if version {
+            print(Self.versionOutput())
+            return
+        }
+
+        var command = CheckupCommand()
+        command.config = config
+        try command.run()
     }
 }
 
@@ -108,7 +134,7 @@ public struct VersionCommand: ParsableCommand {
     public init() {}
 
     public func run() throws {
-        print("kenshincheckup dev")
+        print(KenshinCheckupCommand.versionOutput())
     }
 }
 
