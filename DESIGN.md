@@ -1,10 +1,12 @@
-# kenshincheckup Spec (v1.0)
+# kenshincheckup Spec (v1.1)
 
 Goal: Check the PC state and notify only (no fixes).
+Current scope: only the `chezmoi-unmanaged` plugin (first milestone).
 
 Main flow:
-- main calls: doctor_nix_config, doctor_brew_doctor, doctor_chezmoi_unmanaged.
-- doctor_mole_dry_run is TODO and not called yet.
+- main loads config from `~/.config/kenshin/config.toml`.
+- main runs only the `chezmoi-unmanaged` plugin.
+- Other plugins are out of scope for the first milestone.
 
 Output:
 - Each check prints a header line: `== <check_name> ==`.
@@ -13,63 +15,58 @@ Output:
 - Keep the prefix width at 6 characters by using two trailing spaces for `[OK]  `.
 - Do not interleave outputs from different checks (serial execution only).
  - Output format example:
-   - `== doctor_nix_config ==`
-   - `Nix config sanity check.`
-   - `[OK]  nix config check passed`
+   - `== doctor_chezmoi_unmanaged ==`
+   - `Detect ignored but unmanaged config files.`
+   - `[OK]  no unmanaged files`
 
 Exit codes:
 - `0`: all checks are OK or SKIP.
 - `1`: any WARN or FAIL occurs.
 
-Functions:
-- doctor_nix_config: run `nix config check`. If exit non-zero, report output; otherwise print OK.
-  - Output example:
-    - `== doctor_nix_config ==`
-    - `Nix config sanity check.`
-    - `[OK]  nix config check passed`
-- doctor_brew_doctor: run `brew doctor`. If exit non-zero, report output; otherwise print OK.
-  - Output example:
-    - `== doctor_brew_doctor ==`
-    - `Homebrew health check.`
-    - `[WARN] brew doctor reported issues`
-- doctor_mole_dry_run: TODO: run `mole --dry-run` and show estimated reclaimable space.
-  - Details will be finalized immediately before implementation.
-- doctor_chezmoi_unmanaged:
+Config:
+- Load from `~/.config/kenshin/config.toml`.
+- The config defines file glob patterns to scan.
+  - Example:
+    - `[[plugins.chezmoi_unmanaged]]` is not used; use a table.
+    - `[plugins.chezmoi_unmanaged]`
+    - `patterns = [".claude/config.toml", ".codex/rules/*.rules"]`
+
+Functions / Plugins:
+- doctor_chezmoi_unmanaged (plugin: `chezmoi-unmanaged`):
   - Output example:
     - `== doctor_chezmoi_unmanaged ==`
-    - `Detect ignored but unmanaged config files.`
-    - `[WARN] unmanaged ignored file`
+    - `Detect unmanaged config files.`
+    - `[WARN] unmanaged file`
     - `  - repo: /path/to/repo`
     - `  - file: /path/to/repo/.codex/config.toml`
   - Determine `<ROOT>` from `$(ghq root)`.
   - If `ghq` / `ghq root` is unavailable, output `SKIP`.
   - Find git repos under `<ROOT>` (all repos with `.git`).
   - Do not traverse into a repo once its `.git` is found.
-  - For each repo, check these paths if they exist:
-    - `.codex/rules/*.rules`
-    - `.codex/config.toml`
-    - `.claude/settings.local.json`
-  - `.codex/config.toml` must be managed by git or by chezmoi.
-  - For each existing file:
-    1. Check ignored via `git check-ignore`.
-    2. Check managed via `chezmoi source-path <absolute_path>`.
-    3. If ignored AND not managed, report it.
-    4. `git check-ignore` is expected to return only 0 or 1.
-    5. Any other exit status is treated as an unexpected error: report `FAIL` and stop this function.
-  - "git managed" is defined as: the path is not ignored by `git check-ignore`.
+  - For each repo, check the paths that match the configured patterns.
+    - Patterns are relative to the repo root.
+    - Use glob matching for patterns (e.g. `.codex/rules/*.rules`).
+  - For each matching file:
+    1. Check managed via `chezmoi source-path <absolute_path>`.
+    2. If not managed, report it.
+  - NOTE (current behavior): git-managed files are eligible for notification.
+  - TODO (future): add a git-managed ignore option so git-managed files can be excluded from notification.
+    - "git managed" is defined as: the path is not ignored by `git check-ignore`.
+  - TODO (future): add a pattern-based ignore list so matched files can be excluded from notification.
 
 Constraints:
-- POSIX sh.
+- Swift + SPM only (no Xcode dependency).
 - Notify only; do not modify anything.
+- Follow twada-style TDD: write a failing test, implement minimal change to pass, then refactor.
 
 Notes:
-- If `nix` / `brew` / `chezmoi` / `git` is not installed, output `SKIP` and end that check.
+- If `ghq` / `chezmoi` is not installed, output `SKIP` and end that check.
 - The existence check for each command is done inside each function; do not perform a single upfront check at the start of the script.
 - Unexpected errors in a check (e.g., command execution errors) should report `FAIL` and stop that function.
 
 Implementation direction (draft):
 - App name: kenshincheckup.
-- Language: Swift.
+- Language: Swift (SPM project; no Xcode dependency).
 - Notifications:
   - macOS: use native Swift code for desktop notifications/dialogs.
   - Linux: invoke `notify-send` via shell.
