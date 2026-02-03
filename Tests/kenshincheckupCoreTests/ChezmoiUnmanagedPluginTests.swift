@@ -16,42 +16,9 @@ struct ChezmoiUnmanagedPluginTests {
         return String(detail.dropFirst(prefix.count))
     }
 
-    private final class TestCommandRunner: CommandRunning {
-        struct Call: Equatable {
-            let command: [String]
-            let cwd: URL?
-        }
-
-        var available: Set<String> = []
-        private var stubs: [String: CommandResult] = [:]
-        private(set) var calls: [Call] = []
-
-        func which(_ name: String) -> Bool {
-            available.contains(name)
-        }
-
-        func stub(_ command: [String], cwd: URL?, result: CommandResult) {
-            stubs[key(for: command, cwd: cwd)] = result
-        }
-
-        func run(_ command: [String], cwd: URL?) -> CommandResult {
-            let call = Call(command: command, cwd: cwd)
-            calls.append(call)
-            if let result = stubs[key(for: command, cwd: cwd)] {
-                return result
-            }
-            return CommandResult(exitCode: 1, stdout: "", stderr: "")
-        }
-
-        private func key(for command: [String], cwd: URL?) -> String {
-            let cwdPart = cwd?.path ?? "<nil>"
-            return command.joined(separator: "\u{0}") + "\u{1}" + cwdPart
-        }
-    }
-
     @Test("skip when ghq missing")
     func skipWhenGhqMissing() {
-        let runner = TestCommandRunner()
+        let runner = FakeCommandRunner()
         runner.available = ["chezmoi"]
         let plugin = ChezmoiUnmanagedPlugin(patterns: [".claude/config.toml"], commandRunner: runner, fileManager: .default)
 
@@ -63,7 +30,7 @@ struct ChezmoiUnmanagedPluginTests {
 
     @Test("warn when unmanaged")
     func warnWhenUnmanaged() throws {
-        let runner = TestCommandRunner()
+        let runner = FakeCommandRunner()
         runner.available = ["ghq", "chezmoi"]
 
         let tempRoot = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
@@ -94,7 +61,7 @@ struct ChezmoiUnmanagedPluginTests {
 
     @Test("fail when chezmoi command fails")
     func failWhenChezmoiCommandFails() throws {
-        let runner = TestCommandRunner()
+        let runner = FakeCommandRunner()
         runner.available = ["ghq", "chezmoi"]
 
         let tempRoot = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
@@ -131,7 +98,7 @@ struct ChezmoiUnmanagedPluginTests {
 
     @Test("ok when managed")
     func okWhenManaged() throws {
-        let runner = TestCommandRunner()
+        let runner = FakeCommandRunner()
         runner.available = ["ghq", "chezmoi"]
 
         let tempRoot = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
