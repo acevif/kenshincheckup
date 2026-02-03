@@ -46,8 +46,8 @@ public struct KenshinCheckupCommand: ParsableCommand {
             return
         }
 
-        var command = CheckupSubcommand()
-        command.config = config
-        try command.run()
+        var checkupSubcommand = CheckupSubcommand()
+        checkupSubcommand.config = config
+        try checkupSubcommand.run()
     }
 }
