@@ -1,6 +1,7 @@
 import Foundation
 
 public struct ChezmoiUnmanagedPlugin: Plugin {
+    public typealias ConfigType = ChezmoiUnmanagedConfig
     public let name: String = "doctor_chezmoi_unmanaged"
     public let description: String = "Detect unmanaged config files."
 
