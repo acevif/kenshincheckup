@@ -5,8 +5,9 @@ import KenshinCheckupCore
 public struct KenshinCheckupCommand: ParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "kenshin",
-        abstract: "config health checks (current: chezmoi-unmanaged)",
-        subcommands: [CheckupSubcommand.self, VersionSubcommand.self, HelpSubcommand.self]
+        abstract: "KenshinCheckup (kenshin) performs multiple doctor checks in one go.",
+        discussion: "Repository: https://github.com/acevif/kenshincheckup",
+        subcommands: [CheckupSubcommand.self, VersionSubcommand.self]
     )
 
     @Option(name: [.short, .long], help: "Path to config file.")
