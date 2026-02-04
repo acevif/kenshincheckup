@@ -22,8 +22,6 @@ struct SwiftFormatBuildToolPlugin: BuildToolPlugin {
         let reportURL: URL = outputDirectoryURL.appendingPathComponent("swiftformat-report.json")
         var arguments: [String] = [
             "--lint",
-            "--swift-version",
-            "6.2",
             "--cache",
             cacheURL.path,
             "--reporter",
