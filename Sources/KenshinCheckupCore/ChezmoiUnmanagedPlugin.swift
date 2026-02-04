@@ -1,7 +1,7 @@
 import Foundation
 import Logging
 
-fileprivate let logger: Logger = .init(label: "kenshin.plugin.chezmoi_unmanaged")
+private let logger: Logger = .init(label: "kenshin.plugin.chezmoi_unmanaged")
 
 public struct ChezmoiUnmanagedPlugin: Plugin {
     public typealias ConfigType = ChezmoiUnmanagedConfig
@@ -38,80 +38,118 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
             return skippedResult("chezmoi not found")
         }
 
+        switch resolveRootURL() {
+        case .success(let rootURL):
+            let repos = findGitRepos(in: rootURL)
+            logger.debug("repos discovered", metadata: ["count": "\(repos.count)"])
+
+            var entries: [CheckEntry] = []
+            for repo in repos {
+                if let result = scanRepo(repo, entries: &entries) {
+                    return result
+                }
+            }
+
+            if entries.isEmpty {
+                entries.append(CheckEntry(result: .outcome(.ok), message: "no unmanaged files"))
+            }
+
+            return CheckResult(id: id, description: description, entries: entries)
+        case .failure(let result):
+            return result
+        }
+    }
+
+    private enum RootURLResolution {
+        case success(URL)
+        case failure(CheckResult)
+    }
+
+    private func resolveRootURL() -> RootURLResolution {
         let ghqRoot = commandRunner.run(["ghq", "root"], cwd: nil)
         logger.debug(
             "ghq root",
             metadata: [
                 "exitCode": "\(ghqRoot.exitCode)",
                 "stdout": "\(ghqRoot.stdout.trimmingCharacters(in: .whitespacesAndNewlines))",
-                "stderr": "\(ghqRoot.stderr.trimmingCharacters(in: .whitespacesAndNewlines))",
+                "stderr": "\(ghqRoot.stderr.trimmingCharacters(in: .whitespacesAndNewlines))"
             ]
         )
         guard ghqRoot.exitCode == .some(.EXIT_SUCCESS) else {
-            return skippedResult("ghq root failed")
+            return .failure(skippedResult("ghq root failed"))
         }
 
         let rootPath = ghqRoot.stdout.trimmingCharacters(in: .whitespacesAndNewlines)
-        if rootPath.isEmpty {
-            return skippedResult("ghq root empty")
+        guard !rootPath.isEmpty else {
+            return .failure(skippedResult("ghq root empty"))
         }
 
         let rootURL: URL = .init(fileURLWithPath: rootPath)
-        let repos = findGitRepos(in: rootURL)
-        logger.debug("repos discovered", metadata: ["count": "\(repos.count)"])
+        return .success(rootURL)
+    }
 
-        var entries: [CheckEntry] = []
-        for repo in repos {
-            logger.debug("scan repo", metadata: ["repo": "\(repo.path)"])
-            let matches = findMatchingFiles(in: repo, patterns: patterns)
-            logger.debug("pattern matches", metadata: ["repo": "\(repo.path)", "count": "\(matches.count)"])
-            for fileURL in matches {
-                logger.debug("check file", metadata: ["file": "\(fileURL.path)"])
-                let managed = commandRunner.run(["chezmoi", "source-path", fileURL.path], cwd: nil)
-                switch managed.exitCode {
-                case .some(.EXIT_SUCCESS):
-                    logger.debug("managed file", metadata: ["file": "\(fileURL.path)"])
-                    continue
-                case .some(.EXIT_FAILURE):
-                    logger.debug("unmanaged file", metadata: ["file": "\(fileURL.path)"])
-                    let entry: CheckEntry = .init(
-                        result: .outcome(.warn),
-                        message: "unmanaged file",
-                        details: ["repo: \(repo.path)", "file: \(fileURL.path)"]
-                    )
-                    entries.append(entry)
-                default:
-                    logger.debug(
-                        "chezmoi command failed",
-                        metadata: [
-                            "file": "\(fileURL.path)",
-                            "exitCode": "\(managed.exitCode)",
-                            "stderr": "\(managed.stderr)",
-                        ]
-                    )
-                    let entry: CheckEntry = .init(
-                        result: .failed,
-                        message: "chezmoi command failed",
-                        details: [
-                            "repo: \(repo.path)",
-                            "file: \(fileURL.path)",
-                            "error: \(managed.stderr)",
-                        ]
-                    )
-                    return CheckResult(id: id, description: description, entries: [entry])
-                }
+    private func scanRepo(_ repo: URL, entries: inout [CheckEntry]) -> CheckResult? {
+        logger.debug("scan repo", metadata: ["repo": "\(repo.path)"])
+        let matches = findMatchingFiles(in: repo, patterns: patterns)
+        logger.debug(
+            "pattern matches",
+            metadata: [
+                "repo": "\(repo.path)",
+                "count": "\(matches.count)"
+            ]
+        )
+        for fileURL in matches {
+            if let result = checkFile(fileURL, in: repo, entries: &entries) {
+                return result
             }
         }
+        return nil
+    }
 
-        if entries.isEmpty {
-            entries.append(CheckEntry(result: .outcome(.ok), message: "no unmanaged files"))
+    private func checkFile(_ fileURL: URL, in repo: URL, entries: inout [CheckEntry]) -> CheckResult? {
+        logger.debug("check file", metadata: ["file": "\(fileURL.path)"])
+        let managed = commandRunner.run(["chezmoi", "source-path", fileURL.path], cwd: nil)
+        switch managed.exitCode {
+        case .some(.EXIT_SUCCESS):
+            logger.debug("managed file", metadata: ["file": "\(fileURL.path)"])
+            return nil
+        case .some(.EXIT_FAILURE):
+            logger.debug("unmanaged file", metadata: ["file": "\(fileURL.path)"])
+            let entry: CheckEntry = .init(
+                result: .outcome(.warn),
+                message: "unmanaged file",
+                details: ["repo: \(repo.path)", "file: \(fileURL.path)"]
+            )
+            entries.append(entry)
+            return nil
+        default:
+            logger.debug(
+                "chezmoi command failed",
+                metadata: [
+                    "file": "\(fileURL.path)",
+                    "exitCode": "\(managed.exitCode)",
+                    "stderr": "\(managed.stderr)"
+                ]
+            )
+            let entry: CheckEntry = .init(
+                result: .failed,
+                message: "chezmoi command failed",
+                details: [
+                    "repo: \(repo.path)",
+                    "file: \(fileURL.path)",
+                    "error: \(managed.stderr)"
+                ]
+            )
+            return CheckResult(id: id, description: description, entries: [entry])
         }
-
-        return CheckResult(id: id, description: description, entries: entries)
     }
 
     private func skippedResult(_ reason: String) -> CheckResult {
-        CheckResult(id: id, description: description, entries: [CheckEntry(result: .skipped, message: reason)])
+        CheckResult(
+            id: id,
+            description: description,
+            entries: [CheckEntry(result: .skipped, message: reason)]
+        )
     }
 
     private func findGitRepos(in root: URL) -> [URL] {
@@ -122,7 +160,11 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
 
     private func walk(directory: URL, repos: inout [URL]) {
         logger.debug("walk directory", metadata: ["path": "\(directory.path)"])
-        guard let contents = try? fileManager.contentsOfDirectory(at: directory, includingPropertiesForKeys: [.isDirectoryKey], options: []) else {
+        guard let contents = try? fileManager.contentsOfDirectory(
+            at: directory,
+            includingPropertiesForKeys: [.isDirectoryKey],
+            options: []
+        ) else {
             logger.debug("walk failed to list directory", metadata: ["path": "\(directory.path)"])
             return
         }
@@ -143,7 +185,12 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
 
     private func findMatchingFiles(in repoRoot: URL, patterns: [String]) -> [URL] {
         logger.debug("enumerate repo", metadata: ["repo": "\(repoRoot.path)"])
-        guard let enumerator = fileManager.enumerator(at: repoRoot, includingPropertiesForKeys: [.isDirectoryKey], options: [], errorHandler: nil) else {
+        guard let enumerator = fileManager.enumerator(
+            at: repoRoot,
+            includingPropertiesForKeys: [.isDirectoryKey],
+            options: [],
+            errorHandler: nil
+        ) else {
             logger.debug("enumerator failed", metadata: ["repo": "\(repoRoot.path)"])
             return []
         }
@@ -159,7 +206,13 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
                 continue
             }
             if patterns.contains(where: { PathMatcher.matches($0, relative) }) {
-                logger.debug("pattern matched", metadata: ["repo": "\(repoRoot.path)", "path": "\(relative)"])
+                logger.debug(
+                    "pattern matched",
+                    metadata: [
+                        "repo": "\(repoRoot.path)",
+                        "path": "\(relative)"
+                    ]
+                )
                 matches.append(fileURL)
             }
         }
