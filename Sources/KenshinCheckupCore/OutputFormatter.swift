@@ -8,7 +8,7 @@ public struct OutputFormatter {
         lines.append(contentsOf: descriptionLines)
 
         for entry in result.entries {
-            let prefixText = prefix(for: entry.status)
+            let prefixText = prefix(for: entry.result)
             let separator = prefixText.hasSuffix(" ") ? "" : " "
             lines.append(prefixText + separator + entry.message)
             for detail in entry.details {
@@ -25,15 +25,15 @@ public struct OutputFormatter {
         }
     }
 
-    private static func prefix(for status: CheckStatus) -> String {
-        switch status {
-        case .ok:
+    private static func prefix(for result: CheckupResult) -> String {
+        switch result {
+        case .outcome(.ok):
             return "[OK]  "
-        case .warn:
+        case .outcome(.warn):
             return "[WARN]"
-        case .fail:
+        case .failed:
             return "[FAIL]"
-        case .skip:
+        case .skipped:
             return "[SKIP]"
         }
     }

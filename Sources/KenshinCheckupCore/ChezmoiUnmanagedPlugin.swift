@@ -25,7 +25,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
             return CheckResult(
                 id: id,
                 description: description,
-                entries: [CheckEntry(status: .skip, message: "no patterns configured")]
+                entries: [CheckEntry(result: .skipped, message: "no patterns configured")]
             )
         }
 
@@ -75,7 +75,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
                 case .some(.EXIT_FAILURE):
                     logger.debug("unmanaged file", metadata: ["file": "\(fileURL.path)"])
                     let entry = CheckEntry(
-                        status: .warn,
+                        result: .outcome(.warn),
                         message: "unmanaged file",
                         details: ["repo: \(repo.path)", "file: \(fileURL.path)"]
                     )
@@ -90,7 +90,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
                         ]
                     )
                     let entry = CheckEntry(
-                        status: .fail,
+                        result: .failed,
                         message: "chezmoi command failed",
                         details: [
                             "repo: \(repo.path)",
@@ -104,14 +104,14 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
         }
 
         if entries.isEmpty {
-            entries.append(CheckEntry(status: .ok, message: "no unmanaged files"))
+            entries.append(CheckEntry(result: .outcome(.ok), message: "no unmanaged files"))
         }
 
         return CheckResult(id: id, description: description, entries: entries)
     }
 
     private func skippedResult(_ reason: String) -> CheckResult {
-        CheckResult(id: id, description: description, entries: [CheckEntry(status: .skip, message: reason)])
+        CheckResult(id: id, description: description, entries: [CheckEntry(result: .skipped, message: reason)])
     }
 
     private func findGitRepos(in root: URL) -> [URL] {

@@ -9,7 +9,7 @@ public struct CheckResult: Equatable {
         self.entries = entries
     }
 
-    public var hasFailure: Bool {
-        entries.contains { $0.status.isFailure }
+    public var hasIssue: Bool {
+        entries.contains { $0.result.isIssue }
     }
 }

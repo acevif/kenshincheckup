@@ -34,7 +34,7 @@ public struct CheckupSubcommand: ParsableCommand {
             )
             let result = plugin.run()
             OutputFormatter.write(result)
-            if result.hasFailure {
+            if result.hasIssue {
                 throw ArgumentParser.ExitCode.failure
             }
         } catch {
@@ -51,7 +51,7 @@ public struct CheckupSubcommand: ParsableCommand {
                 description: "Detect unmanaged config files.",
                 entries: [
                     CheckEntry(
-                        status: .fail,
+                        result: .failed,
                         message: "config load failed",
                         details: ["path: \(configURL.path)", "error: \(error)"]
                     ),

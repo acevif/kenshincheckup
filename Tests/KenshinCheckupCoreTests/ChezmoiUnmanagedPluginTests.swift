@@ -26,7 +26,7 @@ struct ChezmoiUnmanagedPluginTests {
 
         let expectedEntryCount = 1
         #expect(result.entries.count == expectedEntryCount)
-        #expect(result.entries.first?.status == .skip)
+        #expect(result.entries.first?.result == .skipped)
     }
 
     @Test("warn when unmanaged")
@@ -52,7 +52,7 @@ struct ChezmoiUnmanagedPluginTests {
         let plugin = ChezmoiUnmanagedPlugin(patterns: [".claude/config.toml"], commandRunner: runner, fileManager: .default)
         let result = plugin.run()
 
-        #expect(result.entries.first?.status == .warn)
+        #expect(result.entries.first?.result == .outcome(.warn))
         #expect(result.entries.first?.message == "unmanaged file")
         let details = result.entries.first?.details ?? []
         let expectedDetailsCount = 2
@@ -92,7 +92,7 @@ struct ChezmoiUnmanagedPluginTests {
 
         let expectedEntryCount = 1
         #expect(result.entries.count == expectedEntryCount)
-        #expect(result.entries.first?.status == .fail)
+        #expect(result.entries.first?.result == .failed)
         #expect(result.entries.first?.message == "chezmoi command failed")
         let details = result.entries.first?.details ?? []
         let expectedDetailsCount = 3
@@ -127,6 +127,6 @@ struct ChezmoiUnmanagedPluginTests {
         let plugin = ChezmoiUnmanagedPlugin(patterns: [".claude/config.toml"], commandRunner: runner, fileManager: .default)
         let result = plugin.run()
 
-        #expect(result.entries.first?.status == .ok)
+        #expect(result.entries.first?.result == .outcome(.ok))
     }
 }
