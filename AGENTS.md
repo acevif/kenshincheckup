@@ -16,3 +16,4 @@ NOTE: This project is under development; see `DESIGN.md` for the current specifi
 - Do not put developer-facing details in `README.md`; keep them in `AGENTS.md`.
 - Commit changes without asking for permission; decide on your own when to commit.
 - Keep one type per file.
+- Prefer explicit type annotations for constants, e.g. `static let EXIT_SUCCESS: ExitCode = 0` (instead of `static let EXIT_SUCCESS = ExitCode(rawValue: 0)`).
