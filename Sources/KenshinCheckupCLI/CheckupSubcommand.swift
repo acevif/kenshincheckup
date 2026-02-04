@@ -25,6 +25,7 @@ public struct CheckupSubcommand: ParsableCommand {
 
         let commandRunner = SystemCommandRunner()
 
+        let result: CheckResult
         do {
             let loaded = try ConfigLoader.load(from: configURL)
             let plugin = ChezmoiUnmanagedPlugin(
@@ -32,11 +33,7 @@ public struct CheckupSubcommand: ParsableCommand {
                 commandRunner: commandRunner,
                 fileManager: .default
             )
-            let result = plugin.run()
-            OutputFormatter.write(result)
-            if result.hasIssue {
-                throw ArgumentParser.ExitCode.failure
-            }
+            result = plugin.run()
         } catch {
             logger.error(
                 "config load failed",
@@ -46,7 +43,7 @@ public struct CheckupSubcommand: ParsableCommand {
                     "errorType": "\(type(of: error))",
                 ]
             )
-            let result = CheckResult(
+            result = CheckResult(
                 id: "doctor_chezmoi_unmanaged",
                 description: "Detect unmanaged config files.",
                 entries: [
@@ -57,8 +54,12 @@ public struct CheckupSubcommand: ParsableCommand {
                     ),
                 ]
             )
-            OutputFormatter.write(result)
-            throw ArgumentParser.ExitCode.failure
+        }
+
+        OutputFormatter.write(result)
+        let exitStatus = CheckupExitStatus.from([result])
+        if exitStatus != .ok {
+            throw ArgumentParser.ExitCode(exitStatus.exitCode)
         }
     }
 
