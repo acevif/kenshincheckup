@@ -13,7 +13,7 @@ public struct SystemCommandRunner: CommandRunning {
         }
         let parts = pathValue.split(separator: ":").map { String($0) }
         for part in parts {
-            let candidate = URL(fileURLWithPath: part).appendingPathComponent(name)
+            let candidate: URL = .init(fileURLWithPath: part).appendingPathComponent(name)
             if fileManager.isExecutableFile(atPath: candidate.path) {
                 return true
             }
@@ -22,13 +22,13 @@ public struct SystemCommandRunner: CommandRunning {
     }
 
     public func run(_ command: [String], cwd: URL?) -> CommandResult {
-        let process = Process()
+        let process: Process = .init()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
         process.arguments = command
         process.currentDirectoryURL = cwd
 
-        let stdoutPipe = Pipe()
-        let stderrPipe = Pipe()
+        let stdoutPipe: Pipe = .init()
+        let stderrPipe: Pipe = .init()
         process.standardOutput = stdoutPipe
         process.standardError = stderrPipe
 
@@ -42,8 +42,8 @@ public struct SystemCommandRunner: CommandRunning {
         let stdoutData = stdoutPipe.fileHandleForReading.readDataToEndOfFile()
         let stderrData = stderrPipe.fileHandleForReading.readDataToEndOfFile()
 
-        let stdout = String(data: stdoutData, encoding: .utf8) ?? ""
-        let stderr = String(data: stderrData, encoding: .utf8) ?? ""
+        let stdout: String = .init(data: stdoutData, encoding: .utf8) ?? ""
+        let stderr: String = .init(data: stderrData, encoding: .utf8) ?? ""
 
         return CommandResult(exitCode: ExitCode(rawValue: process.terminationStatus), stdout: stdout, stderr: stderr)
     }

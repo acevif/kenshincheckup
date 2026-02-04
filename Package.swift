@@ -3,7 +3,7 @@
 
 import PackageDescription
 
-let package = Package(
+let package: Package = .init(
     name: "KenshinCheckup",
     platforms: [
         .macOS(.v10_15),

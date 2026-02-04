@@ -3,10 +3,10 @@ import Foundation
 import KenshinCheckupCore
 import Logging
 
-fileprivate let logger = Logger(label: "kenshin.checkup")
+fileprivate let logger: Logger = .init(label: "kenshin.checkup")
 
 public struct CheckupSubcommand: ParsableCommand {
-    public static let configuration = CommandConfiguration(
+    public static let configuration: CommandConfiguration = .init(
         commandName: "checkup",
         abstract: "Run checkups using the config file."
     )
@@ -21,14 +21,14 @@ public struct CheckupSubcommand: ParsableCommand {
             ?? FileManager.default.homeDirectoryForCurrentUser.path
         let configPath = config.map { Self.resolvePath($0, homePath: homePath) }
             ?? Self.defaultConfigPath(homePath: homePath)
-        let configURL = URL(fileURLWithPath: configPath)
+        let configURL: URL = .init(fileURLWithPath: configPath)
 
-        let commandRunner = SystemCommandRunner()
+        let commandRunner: SystemCommandRunner = .init()
 
         let result: CheckResult
         do {
             let loaded = try ConfigLoader.load(from: configURL)
-            let plugin = ChezmoiUnmanagedPlugin(
+            let plugin: ChezmoiUnmanagedPlugin = .init(
                 patterns: loaded.chezmoiUnmanaged.patterns,
                 commandRunner: commandRunner,
                 fileManager: .default
@@ -57,7 +57,7 @@ public struct CheckupSubcommand: ParsableCommand {
         }
 
         OutputFormatter.write(result)
-        let exitStatus = CheckupExitStatus.from([result])
+        let exitStatus: CheckupExitStatus = .from([result])
         if exitStatus != .ok {
             throw ArgumentParser.ExitCode(exitStatus.exitCode)
         }
@@ -76,7 +76,7 @@ public struct CheckupSubcommand: ParsableCommand {
             return homePath
         }
         if path.hasPrefix("~/") {
-            let suffix = String(path.dropFirst(2))
+            let suffix: String = .init(path.dropFirst(2))
             return URL(fileURLWithPath: homePath).appendingPathComponent(suffix).path
         }
         return path

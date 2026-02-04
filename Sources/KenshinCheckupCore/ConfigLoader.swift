@@ -10,8 +10,8 @@ public struct ConfigLoader {
     }
 
     public static func parse(_ text: String) throws -> AppConfig {
-        let data = Data(text.utf8)
-        let decoder = TOMLDecoder()
+        let data: Data = .init(text.utf8)
+        let decoder: TOMLDecoder = .init()
         let root: RootConfigDecoding
         do {
             root = try decoder.decode(RootConfigDecoding.self, from: data)

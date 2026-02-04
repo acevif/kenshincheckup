@@ -1,7 +1,7 @@
 import Foundation
 import Logging
 
-fileprivate let logger = Logger(label: "kenshin.plugin.chezmoi_unmanaged")
+fileprivate let logger: Logger = .init(label: "kenshin.plugin.chezmoi_unmanaged")
 
 public struct ChezmoiUnmanagedPlugin: Plugin {
     public typealias ConfigType = ChezmoiUnmanagedConfig
@@ -56,7 +56,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
             return skippedResult("ghq root empty")
         }
 
-        let rootURL = URL(fileURLWithPath: rootPath)
+        let rootURL: URL = .init(fileURLWithPath: rootPath)
         let repos = findGitRepos(in: rootURL)
         logger.debug("repos discovered", metadata: ["count": "\(repos.count)"])
 
@@ -74,7 +74,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
                     continue
                 case .some(.EXIT_FAILURE):
                     logger.debug("unmanaged file", metadata: ["file": "\(fileURL.path)"])
-                    let entry = CheckEntry(
+                    let entry: CheckEntry = .init(
                         result: .outcome(.warn),
                         message: "unmanaged file",
                         details: ["repo: \(repo.path)", "file: \(fileURL.path)"]
@@ -89,7 +89,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
                             "stderr": "\(managed.stderr)",
                         ]
                     )
-                    let entry = CheckEntry(
+                    let entry: CheckEntry = .init(
                         result: .failed,
                         message: "chezmoi command failed",
                         details: [

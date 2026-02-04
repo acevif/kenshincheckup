@@ -18,7 +18,7 @@ final class FakeCommandRunner: CommandRunning {
     }
 
     func run(_ command: [String], cwd: URL?) -> CommandResult {
-        let call = FakeCommandRunnerCall(command: command, cwd: cwd)
+        let call: FakeCommandRunnerCall = .init(command: command, cwd: cwd)
         calls.append(call)
         if let result = stubs[key(for: command, cwd: cwd)] {
             return result

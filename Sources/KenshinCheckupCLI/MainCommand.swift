@@ -5,7 +5,7 @@ import Logging
 
 @main
 public struct MainCommand: ParsableCommand {
-    public static let configuration = CommandConfiguration(
+    public static let configuration: CommandConfiguration = .init(
         commandName: "kenshin",
         abstract: "KenshinCheckup (kenshin) performs multiple doctor checks in one go.",
         discussion: "Find more information at: https://github.com/acevif/kenshincheckup/",
@@ -22,7 +22,7 @@ public struct MainCommand: ParsableCommand {
 
     public func run() throws {
         LoggingSystem.bootstrap { label in
-            var handler = StreamLogHandler.standardError(label: label)
+            var handler: StreamLogHandler = .standardError(label: label)
             handler.logLevel = .debug
             return handler
         }
@@ -32,7 +32,7 @@ public struct MainCommand: ParsableCommand {
             return
         }
 
-        var checkupSubcommand = CheckupSubcommand()
+        var checkupSubcommand: CheckupSubcommand = .init()
         checkupSubcommand.config = config
         try checkupSubcommand.run()
     }

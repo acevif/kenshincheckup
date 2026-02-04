@@ -49,11 +49,11 @@ struct KenshinIntegrationTests {
 
     private func runKenshin(_ args: [String]) throws -> (stdout: String, stderr: String, exitCode: ExitCode) {
         let executableURL = try productsDirectory().appendingPathComponent("kenshin")
-        let process = Process()
+        let process: Process = .init()
         process.executableURL = executableURL
         process.arguments = args
-        let stdout = Pipe()
-        let stderr = Pipe()
+        let stdout: Pipe = .init()
+        let stderr: Pipe = .init()
         process.standardOutput = stdout
         process.standardError = stderr
         try process.run()
@@ -62,15 +62,15 @@ struct KenshinIntegrationTests {
         let stdoutData = stdout.fileHandleForReading.readDataToEndOfFile()
         let stderrData = stderr.fileHandleForReading.readDataToEndOfFile()
 
-        let stdoutText = String(data: stdoutData, encoding: .utf8) ?? ""
-        let stderrText = String(data: stderrData, encoding: .utf8) ?? ""
+        let stdoutText: String = .init(data: stdoutData, encoding: .utf8) ?? ""
+        let stderrText: String = .init(data: stderrData, encoding: .utf8) ?? ""
 
         return (stdoutText, stderrText, ExitCode(rawValue: process.terminationStatus))
     }
 
     private func productsDirectory() throws -> URL {
         #if os(macOS)
-        let bundle = Bundle(for: TestBundleHelper.self)
+        let bundle: Bundle = .init(for: TestBundleHelper.self)
         return bundle.bundleURL.deletingLastPathComponent()
         #else
         return Bundle.main.bundleURL

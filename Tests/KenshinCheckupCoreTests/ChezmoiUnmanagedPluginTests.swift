@@ -18,9 +18,13 @@ struct ChezmoiUnmanagedPluginTests {
 
     @Test("skip when ghq missing")
     func skipWhenGhqMissing() {
-        let runner = FakeCommandRunner()
+        let runner: FakeCommandRunner = .init()
         runner.available = ["chezmoi"]
-        let plugin = ChezmoiUnmanagedPlugin(patterns: [".claude/config.toml"], commandRunner: runner, fileManager: .default)
+        let plugin: ChezmoiUnmanagedPlugin = .init(
+            patterns: [".claude/config.toml"],
+            commandRunner: runner,
+            fileManager: .default
+        )
 
         let result = plugin.run()
 
@@ -31,7 +35,7 @@ struct ChezmoiUnmanagedPluginTests {
 
     @Test("warn when unmanaged")
     func warnWhenUnmanaged() throws {
-        let runner = FakeCommandRunner()
+        let runner: FakeCommandRunner = .init()
         runner.available = ["ghq", "chezmoi"]
 
         let tempRoot = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
@@ -49,7 +53,11 @@ struct ChezmoiUnmanagedPluginTests {
         runner.stub(["ghq", "root"], cwd: nil, result: CommandResult(exitCode: .EXIT_SUCCESS, stdout: tempRoot.path + "\n", stderr: ""))
         runner.stub(["chezmoi", "source-path", expectedFilePath], cwd: nil, result: CommandResult(exitCode: .EXIT_FAILURE, stdout: "", stderr: ""))
 
-        let plugin = ChezmoiUnmanagedPlugin(patterns: [".claude/config.toml"], commandRunner: runner, fileManager: .default)
+        let plugin: ChezmoiUnmanagedPlugin = .init(
+            patterns: [".claude/config.toml"],
+            commandRunner: runner,
+            fileManager: .default
+        )
         let result = plugin.run()
 
         #expect(result.entries.first?.result == .outcome(.warn))
@@ -65,7 +73,7 @@ struct ChezmoiUnmanagedPluginTests {
 
     @Test("fail when chezmoi command fails")
     func failWhenChezmoiCommandFails() throws {
-        let runner = FakeCommandRunner()
+        let runner: FakeCommandRunner = .init()
         runner.available = ["ghq", "chezmoi"]
 
         let tempRoot = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
@@ -87,7 +95,11 @@ struct ChezmoiUnmanagedPluginTests {
             result: CommandResult(exitCode: nil, stdout: "", stderr: "boom")
         )
 
-        let plugin = ChezmoiUnmanagedPlugin(patterns: [".claude/config.toml"], commandRunner: runner, fileManager: .default)
+        let plugin: ChezmoiUnmanagedPlugin = .init(
+            patterns: [".claude/config.toml"],
+            commandRunner: runner,
+            fileManager: .default
+        )
         let result = plugin.run()
 
         let expectedEntryCount = 1
@@ -107,7 +119,7 @@ struct ChezmoiUnmanagedPluginTests {
 
     @Test("ok when managed")
     func okWhenManaged() throws {
-        let runner = FakeCommandRunner()
+        let runner: FakeCommandRunner = .init()
         runner.available = ["ghq", "chezmoi"]
 
         let tempRoot = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
@@ -124,7 +136,11 @@ struct ChezmoiUnmanagedPluginTests {
         runner.stub(["ghq", "root"], cwd: nil, result: CommandResult(exitCode: .EXIT_SUCCESS, stdout: tempRoot.path + "\n", stderr: ""))
         runner.stub(["chezmoi", "source-path", expectedFilePath], cwd: nil, result: CommandResult(exitCode: .EXIT_SUCCESS, stdout: "", stderr: ""))
 
-        let plugin = ChezmoiUnmanagedPlugin(patterns: [".claude/config.toml"], commandRunner: runner, fileManager: .default)
+        let plugin: ChezmoiUnmanagedPlugin = .init(
+            patterns: [".claude/config.toml"],
+            commandRunner: runner,
+            fileManager: .default
+        )
         let result = plugin.run()
 
         #expect(result.entries.first?.result == .outcome(.ok))

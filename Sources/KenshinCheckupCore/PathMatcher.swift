@@ -6,10 +6,10 @@ public struct PathMatcher {
             return true
         }
         let regexPattern = toRegex(pattern)
-        guard let regex = try? NSRegularExpression(pattern: regexPattern, options: []) else {
+        guard let regex: NSRegularExpression = try? .init(pattern: regexPattern, options: []) else {
             return false
         }
-        let range = NSRange(path.startIndex..<path.endIndex, in: path)
+        let range: NSRange = .init(path.startIndex..<path.endIndex, in: path)
         return regex.firstMatch(in: path, options: [], range: range) != nil
     }
 

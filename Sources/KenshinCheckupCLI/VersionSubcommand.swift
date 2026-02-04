@@ -2,7 +2,7 @@ import ArgumentParser
 import KenshinCheckupCore
 
 public struct VersionSubcommand: ParsableCommand {
-    public static let configuration = CommandConfiguration(
+    public static let configuration: CommandConfiguration = .init(
         commandName: "version",
         abstract: "Print version information."
     )
