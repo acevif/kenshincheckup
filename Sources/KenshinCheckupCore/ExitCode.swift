@@ -14,3 +14,14 @@ extension ExitCode: @retroactive CustomDebugStringConvertible {
         "ExitCode(\(rawValue))"
     }
 }
+
+public extension Optional where Wrapped == ExitCode {
+    var logDescription: String {
+        switch self {
+        case .some(let value):
+            return value.description
+        case .none:
+            return "nil"
+        }
+    }
+}
