@@ -17,22 +17,12 @@ struct SwiftFormatBuildToolPlugin: BuildToolPlugin {
         }
 
         let tool: PluginContext.Tool = try context.tool(named: "swiftformat")
-        let outputDirectoryURL: URL = context.pluginWorkDirectoryURL.appendingPathComponent(target.name)
-        try FileManager.default.createDirectory(
-            at: outputDirectoryURL,
-            withIntermediateDirectories: true,
-        )
         let configURL: URL = context.package.directoryURL.appendingPathComponent(".swiftformat")
         guard FileManager.default.fileExists(atPath: configURL.path) else {
             throw SwiftFormatBuildToolPluginError.missingConfig(configURL)
         }
-        let reportURL: URL = outputDirectoryURL.appendingPathComponent("swiftformat-report.json")
         var arguments: [String] = [
             "--lint",
-            "--reporter",
-            "json",
-            "--report",
-            reportURL.path,
         ]
 
         arguments.append(contentsOf: swiftFiles.map(\.path))
@@ -46,7 +36,7 @@ struct SwiftFormatBuildToolPlugin: BuildToolPlugin {
                 arguments: arguments,
                 environment: [:],
                 inputFiles: inputFiles,
-                outputFiles: [reportURL],
+                outputFiles: [],
             ),
         ]
     }
