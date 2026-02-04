@@ -73,7 +73,7 @@ Implementation direction (draft):
 - Configuration:
   - Use `dduan/TOMLDecoder` to parse TOML.
 - Types:
-  - Use `pointfreeco/swift-tagged` to brand `ExitCode`.
+  - Use `pointfreeco/swift-tagged` for branded/phantom types to prevent mixing IDs and raw values (e.g., `ExitCode`, `PluginID`, `CheckID`, `CommandLabel`).
 - Logging:
   - Use `apple/swift-log`.
   - If a backend is needed, use `sushichop/Puppy` (should run on macOS and Linux).
