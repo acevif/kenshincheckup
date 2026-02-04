@@ -11,7 +11,7 @@ import Glibc
 
 @Suite("ExitCode")
 struct ExitCodeTests {
-    @Test("EXIT_SUCCESS matches C stdlib")
+    @Test("EXIT_SUCCESS matches C stdlib constants")
     func exitSuccessMatchesCStdlib() {
         #if canImport(Darwin)
         #expect(Int32(Darwin.EXIT_SUCCESS) == ExitCode.EXIT_SUCCESS.rawValue)
@@ -24,7 +24,7 @@ struct ExitCodeTests {
         #endif
     }
 
-    @Test("EXIT_FAILURE matches C stdlib")
+    @Test("EXIT_FAILURE matches C stdlib constants")
     func exitFailureMatchesCStdlib() {
         #if canImport(Darwin)
         #expect(Int32(Darwin.EXIT_FAILURE) == ExitCode.EXIT_FAILURE.rawValue)
