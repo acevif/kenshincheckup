@@ -12,7 +12,7 @@ import Glibc
 @Suite("ExitCode")
 struct ExitCodeTests {
     @Test("EXIT_SUCCESS consistent across Darwin/Glibc/ExitCode")
-    func exitSuccessMatchesCStdlib() {
+    func exitSuccessConsistentAcrossDarwinGlibcExitCode() {
         #if canImport(Darwin)
         #expect(Int32(Darwin.EXIT_SUCCESS) == ExitCode.EXIT_SUCCESS.rawValue)
         #endif
@@ -25,7 +25,7 @@ struct ExitCodeTests {
     }
 
     @Test("EXIT_FAILURE consistent across Darwin/Glibc/ExitCode")
-    func exitFailureMatchesCStdlib() {
+    func exitFailureConsistentAcrossDarwinGlibcExitCode() {
         #if canImport(Darwin)
         #expect(Int32(Darwin.EXIT_FAILURE) == ExitCode.EXIT_FAILURE.rawValue)
         #endif
