@@ -1,5 +1,9 @@
 # KenshinCheckup Spec
 
+Principles:
+- Shift left. Detect problems early and fix them early.
+- Make it easy to fully leverage AI/coding agents.
+
 Goal: Check the PC state and notify only (no fixes).
 Current scope: only the `chezmoi-unmanaged` plugin (first milestone).
 
