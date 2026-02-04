@@ -1,14 +1,17 @@
 # KenshinCheckup Spec
 
-Goal: Check the PC state and notify only (no fixes).
-Current scope: only the `chezmoi-unmanaged` plugin (first milestone).
+## Goal
+Check the PC state and notify only (no fixes).
 
-Main flow:
+## Current Scope
+Only the `chezmoi-unmanaged` plugin (first milestone).
+
+## Main Flow
 - main loads config from `~/.config/kenshin/config.toml`.
 - main runs only the `chezmoi-unmanaged` plugin.
 - Other plugins are out of scope for the first milestone.
 
-Output:
+## Output
 - Each check prints a header line: `== <check_name> ==`.
 - After the header, print a short description (1-2 lines, fewer than 5 lines total).
 - Prefix each detail line with one of `[OK]  `, `[WARN]`, `[FAIL]`, `[SKIP]`.
@@ -19,11 +22,11 @@ Output:
    - `Detect ignored but unmanaged config files.`
    - `[OK]  no unmanaged files`
 
-Exit codes:
+## Exit Codes
 - `0`: all checks are OK or SKIP.
 - `1`: any WARN or FAIL occurs.
 
-Config:
+## Config
 - Load from `~/.config/kenshin/config.toml`.
 - The config defines file glob patterns to scan.
   - Example:
@@ -31,7 +34,7 @@ Config:
     - `[plugins.chezmoi_unmanaged]`
     - `patterns = [".claude/config.toml", ".codex/rules/*.rules"]`
 
-Functions / Plugins:
+## Functions / Plugins
 - doctor_chezmoi_unmanaged (plugin: `chezmoi-unmanaged`):
   - Output example:
     - `== doctor_chezmoi_unmanaged ==`
@@ -54,16 +57,16 @@ Functions / Plugins:
     - "git managed" is defined as: the path is not ignored by `git check-ignore`.
   - TODO (future): add a pattern-based ignore list so matched files can be excluded from notification.
 
-Constraints:
+## Constraints
 - Swift + SPM only (no Xcode dependency).
 - Notify only; do not modify anything.
 
-Notes:
+## Notes
 - If `ghq` / `chezmoi` is not installed, output `SKIP` and end that check.
 - The existence check for each command is done inside each function; do not perform a single upfront check at the start of the script.
 - Unexpected errors in a check (e.g., command execution errors) should report `FAIL` and stop that function.
 
-Implementation direction (draft):
+## Implementation Direction (Draft)
 - App/command name: kenshin.
 - Language: Swift (SPM project; no Xcode dependency).
 - Versioning:
@@ -82,7 +85,7 @@ Implementation direction (draft):
 - Architecture:
   - Use a plugin-based structure instead of monolithic functions.
 
-Future:
+## Future
 - Candidate plugin: `doctor_git_remind` to detect push/commit omissions using `git-remind` (out of v1.0 scope).
 - Candidate plugin: `doctor_brew_outdated` to report `brew outdated` results (out of v1.0 scope).
 - Candidate plugin: `doctor_mise_doctor` to report `mise doctor` results (out of v1.0 scope).
