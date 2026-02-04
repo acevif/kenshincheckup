@@ -15,5 +15,13 @@ NOTE: This project is under development; see `DESIGN.md` for the current specifi
 - Tests must use Swift Testing (`Testing` module); do not use `XCTestCase`.
 - Do not put developer-facing details in `README.md`; keep them in `AGENTS.md`.
 - Commit changes without asking for permission; decide on your own when to commit.
-- Keep one type per file.
-- Prefer explicit type annotations for constants, e.g. `static let EXIT_SUCCESS: ExitCode = 0` (instead of `static let EXIT_SUCCESS = ExitCode(rawValue: 0)`).
+
+## Coding Style
+
+- One type per file.
+  - This is a guiding principle, not a hard rule.
+  - Extensions are not types and do not count against this rule.
+  - Small helper types (e.g., `PluginIDTag`) may live alongside their primary type.
+- Prefer explicit type annotations on the left-hand side when the right-hand side can omit the type.
+  - Example: `static let EXIT_SUCCESS: ExitCode = 0` (instead of `static let EXIT_SUCCESS = ExitCode(rawValue: 0)`).
+  - Example: `let rootURL: URL = .init(fileURLWithPath: rootPath)` (instead of `let rootURL = URL(fileURLWithPath: rootPath)`).
