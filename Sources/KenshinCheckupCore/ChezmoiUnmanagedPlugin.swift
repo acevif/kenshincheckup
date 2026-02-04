@@ -5,7 +5,7 @@ fileprivate let logger = Logger(label: "kenshin.plugin.chezmoi_unmanaged")
 
 public struct ChezmoiUnmanagedPlugin: Plugin {
     public typealias ConfigType = ChezmoiUnmanagedConfig
-    public let id = PluginID(rawValue: "doctor_chezmoi_unmanaged")
+    public let id: PluginID = "doctor_chezmoi_unmanaged"
     public let description: String = "Detect unmanaged config files."
 
     private let patterns: [String]

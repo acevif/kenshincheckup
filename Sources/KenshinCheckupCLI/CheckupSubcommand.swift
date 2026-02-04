@@ -45,7 +45,7 @@ public struct CheckupSubcommand: ParsableCommand {
                 ]
             )
             let result = CheckResult(
-                id: PluginID(rawValue: "doctor_chezmoi_unmanaged"),
+                id: "doctor_chezmoi_unmanaged",
                 description: "Detect unmanaged config files.",
                 entries: [
                     CheckEntry(
