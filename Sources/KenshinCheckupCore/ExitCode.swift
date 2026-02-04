@@ -15,17 +15,6 @@ extension ExitCode: @retroactive CustomDebugStringConvertible {
     }
 }
 
-public extension Optional where Wrapped == ExitCode {
-    var logDescription: String {
-        switch self {
-        case .some(let value):
-            return value.description
-        case .none:
-            return "nil"
-        }
-    }
-}
-
 extension String.StringInterpolation {
     mutating func appendInterpolation(_ value: ExitCode?) {
         appendLiteral(value?.description ?? "nil")
