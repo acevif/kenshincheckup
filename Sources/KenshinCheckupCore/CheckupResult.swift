@@ -4,7 +4,9 @@ public enum CheckupResult: Equatable {
     case outcome(CheckupOutcome)
     /// The check did not run, but skipping is acceptable and not a problem.
     case skipped
-    /// The check could not be executed or crashed; this is a problem in the check itself.
+    /// The check did not produce a valid outcome due to an error
+    /// (e.g., missing config, network failure, unexpected response),
+    /// even if execution started.
     case failed
 }
 
