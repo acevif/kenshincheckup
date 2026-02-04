@@ -26,12 +26,9 @@ struct SwiftFormatBuildToolPlugin: BuildToolPlugin {
         guard FileManager.default.fileExists(atPath: configURL.path) else {
             throw SwiftFormatBuildToolPluginError.missingConfig(configURL)
         }
-        let cacheURL: URL = outputDirectoryURL.appendingPathComponent("swiftformat.cache")
         let reportURL: URL = outputDirectoryURL.appendingPathComponent("swiftformat-report.json")
         var arguments: [String] = [
             "--lint",
-            "--cache",
-            cacheURL.path,
             "--reporter",
             "json",
             "--report",
