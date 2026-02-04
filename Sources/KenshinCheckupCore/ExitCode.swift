@@ -25,3 +25,9 @@ public extension Optional where Wrapped == ExitCode {
         }
     }
 }
+
+extension String.StringInterpolation {
+    mutating func appendInterpolation(_ value: ExitCode?) {
+        appendLiteral(value?.description ?? "nil")
+    }
+}
