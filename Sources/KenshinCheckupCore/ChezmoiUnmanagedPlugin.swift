@@ -42,7 +42,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
         logger.debug(
             "ghq root",
             metadata: [
-                "exitCode": "\(String(describing: ghqRoot.exitCode))",
+                "exitCode": "\(ghqRoot.exitCode?.description ?? "nil")",
                 "stdout": "\(ghqRoot.stdout.trimmingCharacters(in: .whitespacesAndNewlines))",
                 "stderr": "\(ghqRoot.stderr.trimmingCharacters(in: .whitespacesAndNewlines))",
             ]
@@ -85,7 +85,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
                         "chezmoi command failed",
                         metadata: [
                             "file": "\(fileURL.path)",
-                            "exitCode": "\(String(describing: managed.exitCode))",
+                            "exitCode": "\(managed.exitCode?.description ?? "nil")",
                             "stderr": "\(managed.stderr)",
                         ]
                     )

@@ -8,3 +8,9 @@ public extension ExitCode {
     static let success = ExitCode(rawValue: 0)
     static let failure = ExitCode(rawValue: 1)
 }
+
+extension ExitCode: @retroactive CustomDebugStringConvertible {
+    public var debugDescription: String {
+        "ExitCode(\(rawValue))"
+    }
+}
