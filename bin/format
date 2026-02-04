@@ -1,5 +1,5 @@
 #!/bin/sh
-# Keep this script POSIX-compliant (no bash/zsh-specific extensions).
+# Keep this script POSIX-compliant; check with ShellCheck.
 set -eu
 
 ROOT_DIR=$(cd "$(dirname "$0")/.." && pwd)
