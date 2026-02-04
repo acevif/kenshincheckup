@@ -3,6 +3,7 @@
 ## Principles
 - Shift left. Detect problems early and fix them early.
 - Make it easy to fully leverage AI/coding agents.
+- Practice twada-style TDD.
 
 Goal: Check the PC state and notify only (no fixes).
 Current scope: only the `chezmoi-unmanaged` plugin (first milestone).
@@ -61,7 +62,6 @@ Functions / Plugins:
 Constraints:
 - Swift + SPM only (no Xcode dependency).
 - Notify only; do not modify anything.
-- Follow twada-style TDD: write a failing test, implement minimal change to pass, then refactor.
 
 Notes:
 - If `ghq` / `chezmoi` is not installed, output `SKIP` and end that check.
