@@ -5,7 +5,7 @@ import PackagePlugin
 struct SwiftFormatBuildToolPlugin: BuildToolPlugin {
     func createBuildCommands(context: PluginContext, target: Target) throws -> [Command] {
         guard let sourceTarget = target as? SourceModuleTarget else {
-            return []
+            throw SwiftFormatBuildToolPluginError.unsupportedTarget(target.name)
         }
 
         let swiftFiles: [URL] = sourceTarget
@@ -13,7 +13,7 @@ struct SwiftFormatBuildToolPlugin: BuildToolPlugin {
             .map(\.url)
 
         guard !swiftFiles.isEmpty else {
-            return []
+            throw SwiftFormatBuildToolPluginError.noSwiftFiles(target.name)
         }
 
         let tool: PluginContext.Tool = try context.tool(named: "swiftformat")
@@ -57,11 +57,17 @@ struct SwiftFormatBuildToolPlugin: BuildToolPlugin {
 
 private enum SwiftFormatBuildToolPluginError: Error, LocalizedError {
     case missingConfig(URL)
+    case noSwiftFiles(String)
+    case unsupportedTarget(String)
 
     var errorDescription: String? {
         switch self {
         case let .missingConfig(url):
             "SwiftFormat config missing at \(url.path)"
+        case let .noSwiftFiles(targetName):
+            "SwiftFormat target '\(targetName)' has no Swift source files"
+        case let .unsupportedTarget(targetName):
+            "SwiftFormat target '\(targetName)' is not a source module"
         }
     }
 }
