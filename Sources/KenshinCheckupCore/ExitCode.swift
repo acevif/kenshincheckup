@@ -1,12 +1,12 @@
 import Tagged
 
-public enum ExitCodeTag {}
-
 public typealias ExitCode = Tagged<ExitCodeTag, Int32>
 
+public enum ExitCodeTag {}
+
 public extension ExitCode {
-    static let EXIT_SUCCESS = ExitCode(rawValue: 0)
-    static let EXIT_FAILURE = ExitCode(rawValue: 1)
+    static let EXIT_SUCCESS: ExitCode = 0
+    static let EXIT_FAILURE: ExitCode = 1
 }
 
 extension ExitCode: @retroactive CustomDebugStringConvertible {
