@@ -5,7 +5,8 @@ public enum CheckupResult: Equatable {
     /// The check did not run, but skipping is acceptable and not a problem.
     case skipped
     /// The check did not produce a valid outcome due to an error.
-    /// This includes failures before execution as well as failures during execution.
+    /// This includes failures before execution, during execution,
+    /// or after execution when the outcome is invalid or unclassifiable.
     case failed
 }
 
