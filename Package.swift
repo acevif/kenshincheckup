@@ -18,6 +18,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
         .package(url: "https://github.com/apple/swift-log", from: "1.5.0"),
         .package(url: "https://github.com/dduan/TOMLDecoder", from: "0.4.3"),
+        .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.10.0"),
     ],
     targets: [
         .target(
@@ -25,6 +26,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "TOMLDecoder", package: "TOMLDecoder"),
+                .product(name: "Tagged", package: "swift-tagged"),
             ]
         ),
         .executableTarget(

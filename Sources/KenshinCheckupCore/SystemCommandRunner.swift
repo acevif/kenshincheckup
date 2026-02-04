@@ -45,6 +45,6 @@ public struct SystemCommandRunner: CommandRunning {
         let stdout = String(data: stdoutData, encoding: .utf8) ?? ""
         let stderr = String(data: stderrData, encoding: .utf8) ?? ""
 
-        return CommandResult(exitCode: process.terminationStatus, stdout: stdout, stderr: stderr)
+        return CommandResult(exitCode: ExitCode(rawValue: process.terminationStatus), stdout: stdout, stderr: stderr)
     }
 }

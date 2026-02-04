@@ -34,7 +34,7 @@ public struct CheckupSubcommand: ParsableCommand {
             )
             let result = plugin.run()
             OutputFormatter.write(result)
-            throw ExitCode(OutputFormatter.exitCode(for: [result]))
+            throw ArgumentParser.ExitCode(OutputFormatter.exitCode(for: [result]).rawValue)
         } catch {
             logger.error(
                 "config load failed",
@@ -56,7 +56,7 @@ public struct CheckupSubcommand: ParsableCommand {
                 ]
             )
             OutputFormatter.write(result)
-            throw ExitCode.failure
+            throw ArgumentParser.ExitCode.failure
         }
     }
 
