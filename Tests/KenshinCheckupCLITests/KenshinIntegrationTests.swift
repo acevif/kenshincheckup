@@ -1,10 +1,11 @@
 import Foundation
 import Testing
 @testable import KenshinCheckupCLI
+import KenshinCheckupCore
 
 @Suite("Kenshin Integration")
 struct KenshinIntegrationTests {
-    private static let expectedSuccessExitCode: Int32 = 0
+    private static let expectedSuccessExitCode: ExitCode = .EXIT_SUCCESS
 
     @Test("version: --version")
     func versionLongOption() throws {
@@ -48,7 +49,7 @@ struct KenshinIntegrationTests {
         #expect(result.stdout.lowercased().contains("usage"))
     }
 
-    private func runKenshin(_ args: [String]) throws -> (stdout: String, stderr: String, exitCode: Int32) {
+    private func runKenshin(_ args: [String]) throws -> (stdout: String, stderr: String, exitCode: ExitCode) {
         let executableURL = try productsDirectory().appendingPathComponent("kenshin")
         let process = Process()
         process.executableURL = executableURL
@@ -66,7 +67,7 @@ struct KenshinIntegrationTests {
         let stdoutText = String(data: stdoutData, encoding: .utf8) ?? ""
         let stderrText = String(data: stderrData, encoding: .utf8) ?? ""
 
-        return (stdoutText, stderrText, process.terminationStatus)
+        return (stdoutText, stderrText, ExitCode(rawValue: process.terminationStatus))
     }
 
     private func productsDirectory() throws -> URL {
