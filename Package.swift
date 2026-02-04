@@ -23,6 +23,7 @@ let package = Package(
         .target(
             name: "KenshinCheckupCore",
             dependencies: [
+                .product(name: "Logging", package: "swift-log"),
                 .product(name: "TOMLDecoder", package: "TOMLDecoder"),
             ]
         ),
