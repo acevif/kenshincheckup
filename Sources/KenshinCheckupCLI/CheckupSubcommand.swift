@@ -57,7 +57,8 @@ public struct CheckupSubcommand: ParsableCommand {
         }
 
         OutputFormatter.write(result)
-        let exitStatus: CheckupExitStatus = .from([result])
+        let finalStatus = KenshinFinalStatus.from([result])
+        let exitStatus = KenshinExitStatus.from(finalStatus)
         if exitStatus != .ok {
             throw ArgumentParser.ExitCode(exitStatus.exitCode)
         }
