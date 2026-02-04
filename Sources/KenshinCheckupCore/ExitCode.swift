@@ -5,8 +5,8 @@ public enum ExitCodeTag {}
 public typealias ExitCode = Tagged<ExitCodeTag, Int32>
 
 public extension ExitCode {
-    static let success = ExitCode(rawValue: 0)
-    static let failure = ExitCode(rawValue: 1)
+    static let EXIT_SUCCESS = ExitCode(rawValue: 0)
+    static let EXIT_FAILURE = ExitCode(rawValue: 1)
 }
 
 extension ExitCode: @retroactive CustomDebugStringConvertible {

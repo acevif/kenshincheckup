@@ -47,7 +47,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
                 "stderr": "\(ghqRoot.stderr.trimmingCharacters(in: .whitespacesAndNewlines))",
             ]
         )
-        guard ghqRoot.exitCode == .some(.success) else {
+        guard ghqRoot.exitCode == .some(.EXIT_SUCCESS) else {
             return skippedResult("ghq root failed")
         }
 
@@ -69,10 +69,10 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
                 logger.debug("check file", metadata: ["file": "\(fileURL.path)"])
                 let managed = commandRunner.run(["chezmoi", "source-path", fileURL.path], cwd: nil)
                 switch managed.exitCode {
-                case .some(.success):
+                case .some(.EXIT_SUCCESS):
                     logger.debug("managed file", metadata: ["file": "\(fileURL.path)"])
                     continue
-                case .some(.failure):
+                case .some(.EXIT_FAILURE):
                     logger.debug("unmanaged file", metadata: ["file": "\(fileURL.path)"])
                     let entry = CheckEntry(
                         status: .warn,

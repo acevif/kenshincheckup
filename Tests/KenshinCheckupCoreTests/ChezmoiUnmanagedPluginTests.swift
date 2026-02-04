@@ -45,8 +45,8 @@ struct ChezmoiUnmanagedPluginTests {
         try FileManager.default.createDirectory(at: targetDir, withIntermediateDirectories: true)
         FileManager.default.createFile(atPath: targetFile.path, contents: Data(), attributes: nil)
 
-        runner.stub(["ghq", "root"], cwd: nil, result: CommandResult(exitCode: .success, stdout: tempRoot.path + "\n", stderr: ""))
-        runner.stub(["chezmoi", "source-path", expectedFilePath], cwd: nil, result: CommandResult(exitCode: .failure, stdout: "", stderr: ""))
+        runner.stub(["ghq", "root"], cwd: nil, result: CommandResult(exitCode: .EXIT_SUCCESS, stdout: tempRoot.path + "\n", stderr: ""))
+        runner.stub(["chezmoi", "source-path", expectedFilePath], cwd: nil, result: CommandResult(exitCode: .EXIT_FAILURE, stdout: "", stderr: ""))
 
         let plugin = ChezmoiUnmanagedPlugin(patterns: [".claude/config.toml"], commandRunner: runner, fileManager: .default)
         let result = plugin.run()
@@ -76,7 +76,7 @@ struct ChezmoiUnmanagedPluginTests {
         try FileManager.default.createDirectory(at: targetDir, withIntermediateDirectories: true)
         FileManager.default.createFile(atPath: targetFile.path, contents: Data(), attributes: nil)
 
-        runner.stub(["ghq", "root"], cwd: nil, result: CommandResult(exitCode: .success, stdout: tempRoot.path + "\n", stderr: ""))
+        runner.stub(["ghq", "root"], cwd: nil, result: CommandResult(exitCode: .EXIT_SUCCESS, stdout: tempRoot.path + "\n", stderr: ""))
         runner.stub(
             ["chezmoi", "source-path", expectedFilePath],
             cwd: nil,
@@ -112,8 +112,8 @@ struct ChezmoiUnmanagedPluginTests {
         try FileManager.default.createDirectory(at: targetDir, withIntermediateDirectories: true)
         FileManager.default.createFile(atPath: targetFile.path, contents: Data(), attributes: nil)
 
-        runner.stub(["ghq", "root"], cwd: nil, result: CommandResult(exitCode: .success, stdout: tempRoot.path + "\n", stderr: ""))
-        runner.stub(["chezmoi", "source-path", expectedFilePath], cwd: nil, result: CommandResult(exitCode: .success, stdout: "", stderr: ""))
+        runner.stub(["ghq", "root"], cwd: nil, result: CommandResult(exitCode: .EXIT_SUCCESS, stdout: tempRoot.path + "\n", stderr: ""))
+        runner.stub(["chezmoi", "source-path", expectedFilePath], cwd: nil, result: CommandResult(exitCode: .EXIT_SUCCESS, stdout: "", stderr: ""))
 
         let plugin = ChezmoiUnmanagedPlugin(patterns: [".claude/config.toml"], commandRunner: runner, fileManager: .default)
         let result = plugin.run()

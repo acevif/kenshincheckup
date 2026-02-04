@@ -20,7 +20,7 @@ final class FakeCommandRunner: CommandRunning {
         if let result = stubs[key(for: command, cwd: cwd)] {
             return result
         }
-        return CommandResult(exitCode: .failure, stdout: "", stderr: "")
+        return CommandResult(exitCode: .EXIT_FAILURE, stdout: "", stderr: "")
     }
 
     private func key(for command: [String], cwd: URL?) -> String {

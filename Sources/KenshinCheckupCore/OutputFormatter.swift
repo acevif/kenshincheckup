@@ -27,7 +27,7 @@ public struct OutputFormatter {
 
     public static func exitCode(for results: [CheckResult]) -> ExitCode {
         let hasFailure = results.contains { $0.hasFailure }
-        return hasFailure ? .failure : .success
+        return hasFailure ? .EXIT_FAILURE : .EXIT_SUCCESS
     }
 
     private static func prefix(for status: CheckStatus) -> String {
