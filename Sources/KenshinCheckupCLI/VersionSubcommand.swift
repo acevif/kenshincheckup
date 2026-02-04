@@ -4,7 +4,7 @@ import KenshinCheckupCore
 public struct VersionSubcommand: ParsableCommand {
     public static let configuration: CommandConfiguration = .init(
         commandName: "version",
-        abstract: "Print version information."
+        abstract: "Print version information.",
     )
 
     public init() {}

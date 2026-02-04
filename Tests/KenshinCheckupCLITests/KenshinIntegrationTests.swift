@@ -1,7 +1,7 @@
 import Foundation
-import Testing
 @testable import KenshinCheckupCLI
 import KenshinCheckupCore
+import Testing
 
 @Suite("Kenshin Integration")
 struct KenshinIntegrationTests {
@@ -70,10 +70,10 @@ struct KenshinIntegrationTests {
 
     private func productsDirectory() throws -> URL {
         #if os(macOS)
-        let bundle: Bundle = .init(for: TestBundleHelper.self)
-        return bundle.bundleURL.deletingLastPathComponent()
+            let bundle: Bundle = .init(for: TestBundleHelper.self)
+            return bundle.bundleURL.deletingLastPathComponent()
         #else
-        return Bundle.main.bundleURL
+            return Bundle.main.bundleURL
         #endif
     }
 }

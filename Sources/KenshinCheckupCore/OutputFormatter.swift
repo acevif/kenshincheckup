@@ -1,6 +1,6 @@
 import Foundation
 
-public struct OutputFormatter {
+public enum OutputFormatter {
     public static func render(_ result: CheckResult) -> [String] {
         var lines: [String] = []
         lines.append("== \(result.id) ==")
@@ -30,13 +30,13 @@ public struct OutputFormatter {
     private static func prefix(for result: CheckupResult) -> String {
         switch result {
         case .outcome(.ok):
-            return "[OK]  "
+            "[OK]  "
         case .outcome(.warn):
-            return "[WARN]"
+            "[WARN]"
         case .failed:
-            return "[FAIL]"
+            "[FAIL]"
         case .skipped:
-            return "[SKIP]"
+            "[SKIP]"
         }
     }
 }

@@ -1,6 +1,6 @@
 import Foundation
 
-public struct PathMatcher {
+public enum PathMatcher {
     public static func matches(_ pattern: String, _ path: String) -> Bool {
         if pattern == path {
             return true
@@ -9,7 +9,7 @@ public struct PathMatcher {
         guard let regex: NSRegularExpression = try? .init(pattern: regexPattern, options: []) else {
             return false
         }
-        let range: NSRange = .init(path.startIndex..<path.endIndex, in: path)
+        let range: NSRange = .init(path.startIndex ..< path.endIndex, in: path)
         return regex.firstMatch(in: path, options: [], range: range) != nil
     }
 

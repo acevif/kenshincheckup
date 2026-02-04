@@ -3,12 +3,12 @@ import Foundation
 import KenshinCheckupCore
 import Logging
 
-fileprivate let logger: Logger = .init(label: "kenshin.checkup")
+private let logger: Logger = .init(label: "kenshin.checkup")
 
 public struct CheckupSubcommand: ParsableCommand {
     public static let configuration: CommandConfiguration = .init(
         commandName: "checkup",
-        abstract: "Run checkups using the config file."
+        abstract: "Run checkups using the config file.",
     )
 
     @Option(name: [.short, .long], help: "Path to config file.")
@@ -31,7 +31,7 @@ public struct CheckupSubcommand: ParsableCommand {
             let plugin: ChezmoiUnmanagedPlugin = .init(
                 patterns: loaded.chezmoiUnmanaged.patterns,
                 commandRunner: commandRunner,
-                fileManager: .default
+                fileManager: .default,
             )
             result = plugin.run()
         } catch {
@@ -41,7 +41,7 @@ public struct CheckupSubcommand: ParsableCommand {
                     "path": "\(configURL.path)",
                     "error": "\(error)",
                     "errorType": "\(type(of: error))",
-                ]
+                ],
             )
             result = CheckResult(
                 id: "doctor_chezmoi_unmanaged",
@@ -50,9 +50,9 @@ public struct CheckupSubcommand: ParsableCommand {
                     CheckEntry(
                         result: .failed,
                         message: "config load failed",
-                        details: ["path: \(configURL.path)", "error: \(error)"]
+                        details: ["path: \(configURL.path)", "error: \(error)"],
                     ),
-                ]
+                ],
             )
         }
 

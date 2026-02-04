@@ -1,5 +1,5 @@
-import Testing
 @testable import KenshinCheckupCore
+import Testing
 
 @Suite("Config Loader")
 struct ConfigLoaderTests {

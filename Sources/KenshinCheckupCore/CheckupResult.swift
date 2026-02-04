@@ -14,9 +14,9 @@ public extension CheckupResult {
     var isIssue: Bool {
         switch self {
         case .outcome(.warn), .failed:
-            return true
+            true
         case .outcome(.ok), .skipped:
-            return false
+            false
         }
     }
 }

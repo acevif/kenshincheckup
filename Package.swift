@@ -11,13 +11,14 @@ let package: Package = .init(
     products: [
         .executable(
             name: "kenshin",
-            targets: ["KenshinCheckupCLI"]
+            targets: ["KenshinCheckupCLI"],
         ),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
         .package(url: "https://github.com/apple/swift-log", from: "1.5.0"),
         .package(url: "https://github.com/dduan/TOMLDecoder", from: "0.4.3"),
+        .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.59.1"),
         .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.10.0"),
         .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins", from: "0.63.2"),
     ],
@@ -31,7 +32,8 @@ let package: Package = .init(
             ],
             plugins: [
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins"),
-            ]
+                .plugin(name: "SwiftFormatBuildToolPlugin"),
+            ],
         ),
         .executableTarget(
             name: "KenshinCheckupCLI",
@@ -42,7 +44,8 @@ let package: Package = .init(
             ],
             plugins: [
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins"),
-            ]
+                .plugin(name: "SwiftFormatBuildToolPlugin"),
+            ],
         ),
         .testTarget(
             name: "KenshinCheckupCoreTests",
@@ -54,7 +57,8 @@ let package: Package = .init(
             ],
             plugins: [
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins"),
-            ]
+                .plugin(name: "SwiftFormatBuildToolPlugin"),
+            ],
         ),
         .testTarget(
             name: "KenshinCheckupCLITests",
@@ -63,7 +67,15 @@ let package: Package = .init(
             ],
             plugins: [
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins"),
-            ]
+                .plugin(name: "SwiftFormatBuildToolPlugin"),
+            ],
         ),
-    ]
+        .plugin(
+            name: "SwiftFormatBuildToolPlugin",
+            capability: .buildTool(),
+            dependencies: [
+                .product(name: "swiftformat", package: "SwiftFormat"),
+            ],
+        ),
+    ],
 )

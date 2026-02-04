@@ -25,7 +25,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
             return CheckResult(
                 id: id,
                 description: description,
-                entries: [CheckEntry(result: .skipped, message: "no patterns configured")]
+                entries: [CheckEntry(result: .skipped, message: "no patterns configured")],
             )
         }
 
@@ -39,7 +39,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
         }
 
         switch resolveRootURL() {
-        case .success(let rootURL):
+        case let .success(rootURL):
             let repos = findGitRepos(in: rootURL)
             logger.debug("repos discovered", metadata: ["count": "\(repos.count)"])
 
@@ -55,7 +55,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
             }
 
             return CheckResult(id: id, description: description, entries: entries)
-        case .failure(let result):
+        case let .failure(result):
             return result
         }
     }
@@ -72,8 +72,8 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
             metadata: [
                 "exitCode": "\(ghqRoot.exitCode)",
                 "stdout": "\(ghqRoot.stdout.trimmingCharacters(in: .whitespacesAndNewlines))",
-                "stderr": "\(ghqRoot.stderr.trimmingCharacters(in: .whitespacesAndNewlines))"
-            ]
+                "stderr": "\(ghqRoot.stderr.trimmingCharacters(in: .whitespacesAndNewlines))",
+            ],
         )
         guard ghqRoot.exitCode == .some(.EXIT_SUCCESS) else {
             return .failure(skippedResult("ghq root failed"))
@@ -95,8 +95,8 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
             "pattern matches",
             metadata: [
                 "repo": "\(repo.path)",
-                "count": "\(matches.count)"
-            ]
+                "count": "\(matches.count)",
+            ],
         )
         for fileURL in matches {
             if let result = checkFile(fileURL, in: repo, entries: &entries) {
@@ -118,7 +118,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
             let entry: CheckEntry = .init(
                 result: .outcome(.warn),
                 message: "unmanaged file",
-                details: ["repo: \(repo.path)", "file: \(fileURL.path)"]
+                details: ["repo: \(repo.path)", "file: \(fileURL.path)"],
             )
             entries.append(entry)
             return nil
@@ -128,8 +128,8 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
                 metadata: [
                     "file": "\(fileURL.path)",
                     "exitCode": "\(managed.exitCode)",
-                    "stderr": "\(managed.stderr)"
-                ]
+                    "stderr": "\(managed.stderr)",
+                ],
             )
             let entry: CheckEntry = .init(
                 result: .failed,
@@ -137,8 +137,8 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
                 details: [
                     "repo: \(repo.path)",
                     "file: \(fileURL.path)",
-                    "error: \(managed.stderr)"
-                ]
+                    "error: \(managed.stderr)",
+                ],
             )
             return CheckResult(id: id, description: description, entries: [entry])
         }
@@ -148,7 +148,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
         CheckResult(
             id: id,
             description: description,
-            entries: [CheckEntry(result: .skipped, message: reason)]
+            entries: [CheckEntry(result: .skipped, message: reason)],
         )
     }
 
@@ -163,7 +163,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
         guard let contents = try? fileManager.contentsOfDirectory(
             at: directory,
             includingPropertiesForKeys: [.isDirectoryKey],
-            options: []
+            options: [],
         ) else {
             logger.debug("walk failed to list directory", metadata: ["path": "\(directory.path)"])
             return
@@ -189,7 +189,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
             at: repoRoot,
             includingPropertiesForKeys: [.isDirectoryKey],
             options: [],
-            errorHandler: nil
+            errorHandler: nil,
         ) else {
             logger.debug("enumerator failed", metadata: ["repo": "\(repoRoot.path)"])
             return []
@@ -210,8 +210,8 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
                     "pattern matched",
                     metadata: [
                         "repo": "\(repoRoot.path)",
-                        "path": "\(relative)"
-                    ]
+                        "path": "\(relative)",
+                    ],
                 )
                 matches.append(fileURL)
             }

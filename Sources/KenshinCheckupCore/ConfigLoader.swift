@@ -1,7 +1,7 @@
 import Foundation
 import TOMLDecoder
 
-public struct ConfigLoader {
+public enum ConfigLoader {
     public static func load(from url: URL) throws -> AppConfig {
         guard let text = try? String(contentsOf: url, encoding: .utf8) else {
             throw ConfigError.missingFile

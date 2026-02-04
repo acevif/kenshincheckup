@@ -1,6 +1,6 @@
 import Foundation
-import Testing
 @testable import KenshinCheckupCore
+import Testing
 
 @Suite("Chezmoi Unmanaged Plugin")
 struct ChezmoiUnmanagedPluginTests {
@@ -23,7 +23,7 @@ struct ChezmoiUnmanagedPluginTests {
         let plugin: ChezmoiUnmanagedPlugin = .init(
             patterns: [".claude/config.toml"],
             commandRunner: runner,
-            fileManager: .default
+            fileManager: .default,
         )
 
         let result = plugin.run()
@@ -56,8 +56,8 @@ struct ChezmoiUnmanagedPluginTests {
             result: CommandResult(
                 exitCode: .EXIT_SUCCESS,
                 stdout: tempRoot.path + "\n",
-                stderr: ""
-            )
+                stderr: "",
+            ),
         )
         runner.stub(
             ["chezmoi", "source-path", expectedFilePath],
@@ -65,14 +65,14 @@ struct ChezmoiUnmanagedPluginTests {
             result: CommandResult(
                 exitCode: .EXIT_FAILURE,
                 stdout: "",
-                stderr: ""
-            )
+                stderr: "",
+            ),
         )
 
         let plugin: ChezmoiUnmanagedPlugin = .init(
             patterns: [".claude/config.toml"],
             commandRunner: runner,
-            fileManager: .default
+            fileManager: .default,
         )
         let result = plugin.run()
 
@@ -112,19 +112,19 @@ struct ChezmoiUnmanagedPluginTests {
             result: CommandResult(
                 exitCode: .EXIT_SUCCESS,
                 stdout: tempRoot.path + "\n",
-                stderr: ""
-            )
+                stderr: "",
+            ),
         )
         runner.stub(
             ["chezmoi", "source-path", expectedFilePath],
             cwd: nil,
-            result: CommandResult(exitCode: nil, stdout: "", stderr: "boom")
+            result: CommandResult(exitCode: nil, stdout: "", stderr: "boom"),
         )
 
         let plugin: ChezmoiUnmanagedPlugin = .init(
             patterns: [".claude/config.toml"],
             commandRunner: runner,
-            fileManager: .default
+            fileManager: .default,
         )
         let result = plugin.run()
 
@@ -167,8 +167,8 @@ struct ChezmoiUnmanagedPluginTests {
             result: CommandResult(
                 exitCode: .EXIT_SUCCESS,
                 stdout: tempRoot.path + "\n",
-                stderr: ""
-            )
+                stderr: "",
+            ),
         )
         runner.stub(
             ["chezmoi", "source-path", expectedFilePath],
@@ -176,14 +176,14 @@ struct ChezmoiUnmanagedPluginTests {
             result: CommandResult(
                 exitCode: .EXIT_SUCCESS,
                 stdout: "",
-                stderr: ""
-            )
+                stderr: "",
+            ),
         )
 
         let plugin: ChezmoiUnmanagedPlugin = .init(
             patterns: [".claude/config.toml"],
             commandRunner: runner,
-            fileManager: .default
+            fileManager: .default,
         )
         let result = plugin.run()
 

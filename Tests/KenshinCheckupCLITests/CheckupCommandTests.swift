@@ -1,6 +1,6 @@
 import ArgumentParser
-import Testing
 @testable import KenshinCheckupCLI
+import Testing
 
 @Suite("Checkup Command")
 struct CheckupCommandTests {

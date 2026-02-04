@@ -1,6 +1,6 @@
-import Testing
 @testable import KenshinCheckupCLI
 import KenshinCheckupCore
+import Testing
 
 @Suite("Checkup Exit Status")
 struct CheckupExitStatusTests {
