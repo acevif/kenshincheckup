@@ -1,5 +1,9 @@
 import Tagged
 
+/// Represents a process termination status (exit code).
+///
+/// Use this type only for actual process termination statuses,
+/// not for internal app logic or domain results.
 public typealias ExitCode = Tagged<ExitCodeTag, Int32>
 
 public enum ExitCodeTag {}
