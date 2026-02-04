@@ -3,7 +3,7 @@ import Foundation
 public struct OutputFormatter {
     public static func render(_ result: CheckResult) -> [String] {
         var lines: [String] = []
-        lines.append("== \(result.name) ==")
+        lines.append("== \(result.id) ==")
         let descriptionLines = result.description.split(separator: "\n").map { String($0) }
         lines.append(contentsOf: descriptionLines)
 

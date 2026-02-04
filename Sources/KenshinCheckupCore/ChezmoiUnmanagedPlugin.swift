@@ -5,7 +5,7 @@ fileprivate let logger = Logger(label: "kenshin.plugin.chezmoi_unmanaged")
 
 public struct ChezmoiUnmanagedPlugin: Plugin {
     public typealias ConfigType = ChezmoiUnmanagedConfig
-    public let name: String = "doctor_chezmoi_unmanaged"
+    public let id = PluginID(rawValue: "doctor_chezmoi_unmanaged")
     public let description: String = "Detect unmanaged config files."
 
     private let patterns: [String]
@@ -23,7 +23,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
         if patterns.isEmpty {
             logger.debug("skip: no patterns configured")
             return CheckResult(
-                name: name,
+                id: id,
                 description: description,
                 entries: [CheckEntry(status: .skip, message: "no patterns configured")]
             )
@@ -98,7 +98,7 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
                             "error: \(managed.stderr)",
                         ]
                     )
-                    return CheckResult(name: name, description: description, entries: [entry])
+                    return CheckResult(id: id, description: description, entries: [entry])
                 }
             }
         }
@@ -107,11 +107,11 @@ public struct ChezmoiUnmanagedPlugin: Plugin {
             entries.append(CheckEntry(status: .ok, message: "no unmanaged files"))
         }
 
-        return CheckResult(name: name, description: description, entries: entries)
+        return CheckResult(id: id, description: description, entries: entries)
     }
 
     private func skippedResult(_ reason: String) -> CheckResult {
-        CheckResult(name: name, description: description, entries: [CheckEntry(status: .skip, message: reason)])
+        CheckResult(id: id, description: description, entries: [CheckEntry(status: .skip, message: reason)])
     }
 
     private func findGitRepos(in root: URL) -> [URL] {
