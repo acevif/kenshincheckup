@@ -72,6 +72,8 @@ Implementation direction (draft):
   - Git tags are the source of truth for the version string.
 - Configuration:
   - Use `dduan/TOMLDecoder` to parse TOML.
+- Types:
+  - Use `pointfreeco/swift-tagged` to brand `ExitCode`.
 - Logging:
   - Use `apple/swift-log`.
   - If a backend is needed, use `sushichop/Puppy` (should run on macOS and Linux).
