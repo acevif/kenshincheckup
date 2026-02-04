@@ -1,5 +1,4 @@
-# Metrics strictness for readability/reviewability: stricter than SwiftLint defaults.
-# Keep these strict from day one.
+# Stricter metrics for readability/reviewability.
 cyclomatic_complexity:
   warning: 8
   error: 12
