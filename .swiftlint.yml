@@ -17,7 +17,7 @@ file_length:
 
 # Local rules are relaxed during the post-introduction grace period.
 # Keep defaults close, but avoid blocking builds due to naming friction.
-# TODO: After the ramp-up, remove this relaxation and restore stricter naming rules.
+# TODO: After the ramp-up, remove this relaxation and restore default naming rules.
 identifier_name:
   min_length:
     warning: 2
