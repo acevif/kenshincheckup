@@ -12,7 +12,6 @@ struct SwiftFormatBuildToolPlugin: BuildToolPlugin {
         }
 
         let tool: PluginContext.Tool = try context.tool(named: "swiftformat")
-        let configURL: URL = context.package.directoryURL.appendingPathComponent(".swiftformat")
         let outputDirectoryURL: URL = context.pluginWorkDirectoryURL.appendingPathComponent(target.name)
         try FileManager.default.createDirectory(
             at: outputDirectoryURL,
@@ -29,13 +28,6 @@ struct SwiftFormatBuildToolPlugin: BuildToolPlugin {
             "--report",
             reportURL.path,
         ]
-
-        if FileManager.default.fileExists(atPath: configURL.path) {
-            arguments.append(contentsOf: [
-                "--config",
-                configURL.path,
-            ])
-        }
 
         arguments.append(contentsOf: swiftFiles.map(\.path))
 
