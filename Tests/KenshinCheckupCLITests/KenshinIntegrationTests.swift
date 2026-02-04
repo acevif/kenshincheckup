@@ -5,47 +5,45 @@ import KenshinCheckupCore
 
 @Suite("Kenshin Integration")
 struct KenshinIntegrationTests {
-    private static let expectedSuccessExitCode: ExitCode = .EXIT_SUCCESS
-
     @Test("version: --version")
     func versionLongOption() throws {
         let result = try runKenshin(["--version"])
-        #expect(result.exitCode == Self.expectedSuccessExitCode)
+        #expect(result.exitCode == .EXIT_SUCCESS)
         #expect(result.stdout.trimmed() == VersionSubcommand.versionOutput())
     }
 
     @Test("version: -v")
     func versionShortOption() throws {
         let result = try runKenshin(["-v"])
-        #expect(result.exitCode == Self.expectedSuccessExitCode)
+        #expect(result.exitCode == .EXIT_SUCCESS)
         #expect(result.stdout.trimmed() == VersionSubcommand.versionOutput())
     }
 
     @Test("version: subcommand")
     func versionSubcommand() throws {
         let result = try runKenshin(["version"])
-        #expect(result.exitCode == Self.expectedSuccessExitCode)
+        #expect(result.exitCode == .EXIT_SUCCESS)
         #expect(result.stdout.trimmed() == VersionSubcommand.versionOutput())
     }
 
     @Test("help: --help")
     func helpLongOption() throws {
         let result = try runKenshin(["--help"])
-        #expect(result.exitCode == Self.expectedSuccessExitCode)
+        #expect(result.exitCode == .EXIT_SUCCESS)
         #expect(result.stdout.lowercased().contains("usage"))
     }
 
     @Test("help: -h")
     func helpShortOption() throws {
         let result = try runKenshin(["-h"])
-        #expect(result.exitCode == Self.expectedSuccessExitCode)
+        #expect(result.exitCode == .EXIT_SUCCESS)
         #expect(result.stdout.lowercased().contains("usage"))
     }
 
     @Test("help: subcommand")
     func helpSubcommand() throws {
         let result = try runKenshin(["help"])
-        #expect(result.exitCode == Self.expectedSuccessExitCode)
+        #expect(result.exitCode == .EXIT_SUCCESS)
         #expect(result.stdout.lowercased().contains("usage"))
     }
 
