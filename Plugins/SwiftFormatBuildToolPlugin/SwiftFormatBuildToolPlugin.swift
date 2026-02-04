@@ -4,8 +4,13 @@ import PackagePlugin
 @main
 struct SwiftFormatBuildToolPlugin: BuildToolPlugin {
     func createBuildCommands(context: PluginContext, target: Target) throws -> [Command] {
-        let swiftFiles: [URL] = (target as? SourceModuleTarget)
-            .map { $0.sourceFiles(withSuffix: "swift").map(\.url) } ?? []
+        guard let sourceTarget = target as? SourceModuleTarget else {
+            return []
+        }
+
+        let swiftFiles: [URL] = sourceTarget
+            .sourceFiles(withSuffix: "swift")
+            .map(\.url)
 
         guard !swiftFiles.isEmpty else {
             return []
@@ -31,13 +36,19 @@ struct SwiftFormatBuildToolPlugin: BuildToolPlugin {
 
         arguments.append(contentsOf: swiftFiles.map(\.path))
 
+        var inputFiles: [URL] = swiftFiles
+        let configURL: URL = context.package.directoryURL.appendingPathComponent(".swiftformat")
+        if FileManager.default.fileExists(atPath: configURL.path) {
+            inputFiles.append(configURL)
+        }
+
         return [
             .buildCommand(
                 displayName: "SwiftFormat lint (\(target.name))",
                 executable: tool.url,
                 arguments: arguments,
                 environment: [:],
-                inputFiles: swiftFiles,
+                inputFiles: inputFiles,
                 outputFiles: [reportURL],
             ),
         ]
