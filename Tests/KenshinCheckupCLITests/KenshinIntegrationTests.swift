@@ -4,45 +4,47 @@ import Testing
 
 @Suite("Kenshin Integration")
 struct KenshinIntegrationTests {
+    private static let expectedSuccessExitCode: Int32 = 0
+
     @Test("version: --version")
     func versionLongOption() throws {
         let result = try runKenshin(["--version"])
-        #expect(result.exitCode == 0)
+        #expect(result.exitCode == Self.expectedSuccessExitCode)
         #expect(result.stdout.trimmed() == VersionSubcommand.versionOutput())
     }
 
     @Test("version: -v")
     func versionShortOption() throws {
         let result = try runKenshin(["-v"])
-        #expect(result.exitCode == 0)
+        #expect(result.exitCode == Self.expectedSuccessExitCode)
         #expect(result.stdout.trimmed() == VersionSubcommand.versionOutput())
     }
 
     @Test("version: subcommand")
     func versionSubcommand() throws {
         let result = try runKenshin(["version"])
-        #expect(result.exitCode == 0)
+        #expect(result.exitCode == Self.expectedSuccessExitCode)
         #expect(result.stdout.trimmed() == VersionSubcommand.versionOutput())
     }
 
     @Test("help: --help")
     func helpLongOption() throws {
         let result = try runKenshin(["--help"])
-        #expect(result.exitCode == 0)
+        #expect(result.exitCode == Self.expectedSuccessExitCode)
         #expect(result.stdout.lowercased().contains("usage"))
     }
 
     @Test("help: -h")
     func helpShortOption() throws {
         let result = try runKenshin(["-h"])
-        #expect(result.exitCode == 0)
+        #expect(result.exitCode == Self.expectedSuccessExitCode)
         #expect(result.stdout.lowercased().contains("usage"))
     }
 
     @Test("help: subcommand")
     func helpSubcommand() throws {
         let result = try runKenshin(["help"])
-        #expect(result.exitCode == 0)
+        #expect(result.exitCode == Self.expectedSuccessExitCode)
         #expect(result.stdout.lowercased().contains("usage"))
     }
 

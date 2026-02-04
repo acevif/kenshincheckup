@@ -2,6 +2,9 @@ import Foundation
 @testable import KenshinCheckupCore
 
 final class FakeCommandRunner: CommandRunning {
+    private let commandSeparator = "\u{0}"
+    private let cwdSeparator = "\u{1}"
+
     var available: Set<String> = []
     private var stubs: [String: CommandResult] = [:]
     private(set) var calls: [FakeCommandRunnerCall] = []
@@ -25,6 +28,6 @@ final class FakeCommandRunner: CommandRunning {
 
     private func key(for command: [String], cwd: URL?) -> String {
         let cwdPart = cwd?.path ?? "<nil>"
-        return command.joined(separator: "\u{0}") + "\u{1}" + cwdPart
+        return command.joined(separator: commandSeparator) + cwdSeparator + cwdPart
     }
 }
